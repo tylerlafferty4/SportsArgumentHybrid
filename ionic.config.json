@@ -1,0 +1,8 @@
+{
+  "name": "SportsArgumentHybrid",
+  "app_id": "1f19c26c",
+  "type": "ionic-angular",
+  "integrations": {
+    "cordova": {}
+  }
+}
