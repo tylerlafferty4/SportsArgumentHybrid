@@ -81,7 +81,6 @@
     <engine name="ios" spec="4.5.4" />
     <engine name="android" spec="6.3.0" />
     <plugin name="cordova-plugin-youtube-video-player" spec="^1.0.6" />
-    <plugin name="cordova-plugin-cccometchat" spec="file:../../Downloads/ios-sdk-7.0.4/Cordova/CCCometChat" />
     <plugin name="cordova-plugin-whitelist" spec="^1.3.3" />
     <plugin name="cordova-plugin-device" spec="^2.0.1" />
     <plugin name="cordova-plugin-splashscreen" spec="^5.0.2" />

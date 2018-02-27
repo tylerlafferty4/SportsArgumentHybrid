@@ -26,10 +26,8 @@
     "@ionic-native/youtube-video-player": "^4.5.3",
     "@ionic/pro": "1.0.20",
     "@ionic/storage": "2.1.3",
-    "CometChat": "file:../../Downloads/android-sdk-7.0.4/Cordova/CCCometChat",
     "cordova-android": "6.3.0",
     "cordova-ios": "4.5.4",
-    "cordova-plugin-cccometchat": "file:../../Downloads/ios-sdk-7.0.4/Cordova/CCCometChat",
     "cordova-plugin-device": "^2.0.1",
     "cordova-plugin-ionic-keyboard": "^2.0.5",
     "cordova-plugin-ionic-webview": "^1.1.16",
@@ -50,7 +48,6 @@
   "cordova": {
     "plugins": {
       "cordova-plugin-youtube-video-player": {},
-      "cordova-plugin-cccometchat": {},
       "cordova-plugin-whitelist": {},
       "cordova-plugin-device": {},
       "cordova-plugin-splashscreen": {},
