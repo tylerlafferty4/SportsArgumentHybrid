@@ -4,14 +4,12 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-  <h2>Welcome to Ionic!</h2>
-  <p>
-    This starter project comes with simple tabs-based layout for apps
-    that are going to primarily use a Tabbed UI.
-  </p>
-  <p>
-    Take a look at the <code>src/pages/</code> directory to add or change tabs,
-    update any existing page or create new pages.
-  </p>
+<ion-content padding class="bg-style">
+  <ion-card *ngFor="let item of items" (click)="itemTapped($event, item)">
+    <img [src]="item.featured_image_urls.medium">
+    <ion-card-content>
+      <h2 [innerHTML]="item.title.rendered"></h2>
+      <p [innerHTML]="item.excerpt.rendered"></p>
+    </ion-card-content>
+  </ion-card>
 </ion-content>

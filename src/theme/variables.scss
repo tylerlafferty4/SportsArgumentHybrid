@@ -38,28 +38,28 @@ $colors: (
   secondary:  #32db64,
   danger:     #f53d3d,
   light:      #f4f4f4,
-  dark:       #222
+  dark:       #222,
+  navigation: #454545,
 );
-
 
 // App iOS Variables
 // --------------------------------------------------
 // iOS only Sass variables can go here
-
+$toolbar-ios-title-text-color: white;
 
 
 
 // App Material Design Variables
 // --------------------------------------------------
 // Material Design only Sass variables can go here
-
+$toolbar-md-title-text-color: white;
 
 
 
 // App Windows Variables
 // --------------------------------------------------
 // Windows only Sass variables can go here
-
+$toolbar-wp-title-text-color: white;
 
 
 

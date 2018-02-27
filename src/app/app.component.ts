@@ -5,6 +5,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { TabsPage } from '../pages/tabs/tabs';
 
+declare var ReadyUI;
+
 @Component({
   templateUrl: 'app.html'
 })
