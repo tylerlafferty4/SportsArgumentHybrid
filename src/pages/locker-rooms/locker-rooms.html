@@ -1,3 +1,82 @@
+<head>
+    <script type="text/javascript">
+
+      app.initialize();
+
+
+  function check()
+  {
+      var string = device.platform;
+       alert("mycallback1 "+string);
+  }
+  function Init()
+  {
+       alert("Init");
+       if(device.platform=="Android")
+       {
+          CCCometChat.getInstance(function success(data){ alert(" success "+data); },function error(data){ alert(" fail "+data); });
+          CCCometChat.initializeCometChat("SITE-URL","LICENSE-KEY","API-KEY","isCOMETONDEMAND",function success(data){ alert(" success "+data); },function error(data){ alert(" fail "+data); });
+
+       }
+       else if(device.platform=="iOS")
+       {
+         CCCometChat.initializeCometChat("http://192.168.0.123/git/cometchat/client/web/","LICENSE-KEY","","NO",function success(data){ alert(" success "+data); },function error(data){ alert(" fail "+data); });
+       }
+
+  }
+  function Login()
+  {
+       if(device.platform=="Android")
+       {
+            alert("Login Android");
+            CCCometChat.login("Demo 1","cometchat",function success(data){ alert(" success "+data); },function error(data){ alert(" fail "+data); });
+
+       }
+       else if(device.platform=="iOS")
+       {
+             alert("Login iOS");
+            CCCometChat.login("Demo 1","cometchat",function success(data){ alert(" success "+data); },function error(data){ alert(" fail "+data); });
+       }
+
+  }
+  function LaunchY()
+  {
+
+      if(device.platform=="Android")
+      {  alert("Launch Android");
+          CCCometChat.launchCometChat(true,function success(data){ alert(" success "+data); },function error(data){ alert(" fail "+data); });
+      }
+      else if(device.platform=="iOS")
+      {
+          alert("Launch iOS");
+            CCCometChat.launchCometChatWithID("NO","3","NO","NO",function success(data){ alert(" launchCometChatWithID success "+data); },function error(data){ alert(" fail "+data); });
+      }
+
+
+  }
+
+  function LaunchN()
+  {
+
+      if(device.platform=="Android")
+      {  alert("Launch Android");
+          CCCometChat.launchCometChat(false,function success(data){ alert(" success "+data); },function error(data){ alert(" fail "+data); });
+      }
+      else if(device.platform=="iOS")
+      {
+          alert("Launch iOS");
+          CCCometChat.launchCometChat("NO",function success(data){ alert(" success "+data); },function error(data){ alert(" fail "+data); });
+      }
+    }
+
+  function onDeviceReady() {
+
+  }
+
+  document.addEventListener("deviceready", onDeviceReady, true);
+
+</script>
+</head>
 <ion-header>
   <ion-navbar>
     <ion-title>
@@ -7,5 +86,9 @@
 </ion-header>
 
 <ion-content padding>
-
+    <button id="11" onclick="check()">Check Platform</button>
+    <button id="12" onclick="Init()">Init CometChat</button>
+    <button id="13" onclick="Login()">Login CometChat </button>
+    <button id="14" onclick="LaunchY()">Launch CometChatY</button>
+    <button id="15" onclick="LaunchN()">Launch CometChatN</button>
 </ion-content>
