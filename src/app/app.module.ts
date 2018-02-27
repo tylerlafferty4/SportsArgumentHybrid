@@ -16,6 +16,7 @@ import { PostDetail } from '../pages/post-detail/post-detail';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { YoutubePipe } from '../pipes/youtube/youtube';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     TwitterPage,
     HomePage,
     TabsPage,
-    PostDetail
+    PostDetail,
+    YoutubePipe
   ],
   imports: [
     BrowserModule,

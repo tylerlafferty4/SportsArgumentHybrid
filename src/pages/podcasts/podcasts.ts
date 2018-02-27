@@ -27,7 +27,7 @@ export class PodcastsPage {
   
     fetchData(): void {
   
-      let url = 'https://www.googleapis.com/youtube/v3/search?part=id,snippet&channelId=' + this.channelID + '&q=' + this.searchQuery + '&type=video&order=viewCount&maxResults=' + this.maxResults + '&key=' + this.googleToken;
+      let url = 'https://www.googleapis.com/youtube/v3/search?part=id,snippet&channelId=' + this.channelID + '&q=' + this.searchQuery + '&type=video&order=date&maxResults=' + this.maxResults + '&key=' + this.googleToken;
   
       if(this.pageToken) {
         url += '&pageToken=' + this.pageToken;
@@ -35,7 +35,7 @@ export class PodcastsPage {
   
       this.http.get(url).map(res => res.json()).subscribe(data => {
         
-        console.log (data.items);
+        // console.log (data.items);
         // *** Get individual video data like comments, likes and viewCount. Enable this if you want it.
         // let newArray = data.items.map((entry) => {
         //   let videoUrl = 'https://www.googleapis.com/youtube/v3/videos?part=id,snippet,contentDetails,statistics&id=' + entry.id.videoId + '&key=' + this.googleToken;
