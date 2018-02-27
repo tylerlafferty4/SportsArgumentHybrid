@@ -18,6 +18,8 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { YoutubePipe } from '../pipes/youtube/youtube';
 
+import { IonicStorageModule, Storage } from '@ionic/storage';
+
 @NgModule({
   declarations: [
     MyApp,
@@ -32,7 +34,8 @@ import { YoutubePipe } from '../pipes/youtube/youtube';
   imports: [
     BrowserModule,
     HttpModule,
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp),
+    IonicStorageModule.forRoot()
   ],
   bootstrap: [IonicApp],
   entryComponents: [
