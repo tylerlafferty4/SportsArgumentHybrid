@@ -19,7 +19,7 @@ export class PodcastsPage {
     constructor(public http: Http, public nav:NavController, public ytPlayer: YtProvider) {
         let url = 'https://www.googleapis.com/youtube/v3/search?part=id,snippet&channelId=' + this.channelID + '&q=' + this.searchQuery + '&type=video&order=date&maxResults=' + this.maxResults + '&key=' + this.googleToken;
   
-        this.http.get(url).map(res => res.json()).subscribe(data => {
+        //this.http.get(url).map(res => res.json()).subscribe(data => {
             
             // console.log (data.items);
             // *** Get individual video data like comments, likes and viewCount. Enable this if you want it.
@@ -31,7 +31,7 @@ export class PodcastsPage {
             //     return entry.extra = videoData.items;
             //   });
             // });
-            this.posts = this.posts.concat(data.items);
-        });
+          //  this.posts = this.posts.concat(data.items);
+        //});
     }
   }

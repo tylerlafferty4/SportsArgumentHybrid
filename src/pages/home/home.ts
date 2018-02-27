@@ -5,6 +5,7 @@ import {Http} from '@angular/http';
 import 'rxjs/add/operator/map';
 
 @Component({
+  selector: 'home-page',
   templateUrl: 'home.html'
 })
 export class HomePage {

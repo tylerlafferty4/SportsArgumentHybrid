@@ -7,9 +7,8 @@
 <ion-content padding class="bg-style">
   <ion-card *ngFor="let item of items" (click)="itemTapped($event, item)">
     <img [src]="item.featured_image_urls.medium">
-    <ion-card-content>
-      <h2 [innerHTML]="item.title.rendered"></h2>
-      <p [innerHTML]="item.excerpt.rendered"></p>
-    </ion-card-content>
+    <div class="mask"></div>
+    <div class="card-title">{{item.title.rendered}}</div>
+    <div class="card-subtitle">{{item.excerpt.rendered}}</div>
   </ion-card>
 </ion-content>
