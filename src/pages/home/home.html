@@ -13,10 +13,16 @@
       refreshingText="Updating content">
     </ion-refresher-content>
   </ion-refresher>
-  <ion-card *ngFor="let item of items" (click)="itemTapped($event, item)">
-    <img [src]="item.featured_image_urls.medium">
+  <ion-card *ngFor="let post of posts" (click)="itemTapped($event, post)">
+    <img [src]="post.featured_image_urls.medium">
     <div class="mask"></div>
-    <div class="card-title">{{item.title.rendered}}</div>
-    <div class="card-subtitle">{{item.excerpt.rendered}}</div>
+    <div class="card-title">{{post.title.rendered}}</div>
+    <div class="card-subtitle">{{post.excerpt.rendered}}</div>
   </ion-card>
+  <ion-infinite-scroll [enabled]="morePagesAvailable" (ionInfinite)="doInfinite($event)">
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="Loading more posts ...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 </ion-content>

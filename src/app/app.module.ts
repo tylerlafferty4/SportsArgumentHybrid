@@ -7,11 +7,16 @@ import { HttpModule } from '@angular/http';
 import { YoutubeVideoPlayer } from '@ionic-native/youtube-video-player';
 
 import { LockerRoomsPage } from '../pages/locker-rooms/locker-rooms';
+import { LoginPage } from '../pages/login/login';
+import { RegisterPage } from '../pages/register/register';
 import { TwitterPage } from '../pages/twitter/twitter';
 import { PodcastsPage } from '../pages/podcasts/podcasts';
 import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
 import { PostDetail } from '../pages/post-detail/post-detail';
+
+import { AuthenticationService } from '../services/authentication/authentication.service';
+import { WordPressService } from '../services/word-press/word-press.service';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -27,7 +32,9 @@ import { IonicStorageModule } from '@ionic/storage';
     TwitterPage,
     HomePage,
     TabsPage,
-    PostDetail
+    PostDetail,
+    LoginPage,
+    RegisterPage
   ],
   imports: [
     BrowserModule,
@@ -44,12 +51,16 @@ import { IonicStorageModule } from '@ionic/storage';
     PodcastsPage,
     HomePage,
     TabsPage,
-    PostDetail
+    PostDetail, 
+    LoginPage, 
+    RegisterPage
   ],
   providers: [
     StatusBar,
     SplashScreen,
     YoutubeVideoPlayer,
+    WordPressService,
+    AuthenticationService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

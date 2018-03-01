@@ -1,14 +1,43 @@
 <ion-header>
-
     <ion-navbar>
-      <ion-title>{{selectedItem.title.rendered}}</ion-title>
+      <ion-title *ngIf="post">
+        Post
+      </ion-title>
     </ion-navbar>
-  
   </ion-header>
   
   <ion-content padding>
-   <div *ngIf="selectedItem" class="selection">
-      <h2 [innerHTML]="selectedItem.title.rendered"></h2>
-      <div [innerHTML]="selectedItem.content.rendered"></div>
+    <div *ngIf="post" class="post">
+      <div class="post-title" [innerHTML]="post.title.rendered"></div>
+      <div style="width: 100%" class="post-content" [innerHTML]="post.content.rendered | sanitizeHtml"></div>
+      <ion-row>
+        <ion-col>
+          <ion-icon name='md-calendar'></ion-icon>
+          {{post.date.split('T')[0]}}
+        </ion-col>
+        <ion-col text-right>
+          <ion-icon name="person"></ion-icon>
+          {{user}}
+        </ion-col>
+      </ion-row>
+      <p class="bold-title">Comments:</p>
+      <ion-item *ngFor="let comment of comments">
+        <ion-avatar item-start>
+          <img src="{{comment.author_avatar_urls[24]}}">
+        </ion-avatar>
+        <h2>{{comment.author_name}}</h2>
+        <p [innerHTML]="comment.content.rendered"></p>
+      </ion-item>
+      <ion-infinite-scroll [enabled]="morePagesAvailable" (ionInfinite)="loadMoreComments($event)">
+        <ion-infinite-scroll-content
+        loadingSpinner="bubbles"
+        loadingText="Loading more comments...">
+        </ion-infinite-scroll-content>
+      </ion-infinite-scroll>
    </div>
   </ion-content>
+  <ion-footer>
+   <ion-toolbar color="light">
+    <button ion-button block class="comment-button" (click)="createComment()">Add a Comment</button>
+   </ion-toolbar>
+  </ion-footer>
