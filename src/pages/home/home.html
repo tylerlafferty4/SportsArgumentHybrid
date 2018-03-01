@@ -5,6 +5,14 @@
 </ion-header>
 
 <ion-content padding class="bg-style">
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+      <ion-refresher-content
+      pullingIcon="arrow-dropdown"
+      pullingText="Pull to refresh"
+      refreshingSpinner="circles"
+      refreshingText="Updating content">
+    </ion-refresher-content>
+  </ion-refresher>
   <ion-card *ngFor="let item of items" (click)="itemTapped($event, item)">
     <img [src]="item.featured_image_urls.medium">
     <div class="mask"></div>

@@ -4,7 +4,6 @@ import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 
 import { HttpModule } from '@angular/http';
-import { YtProvider } from '../providers/yt/yt';
 import { YoutubeVideoPlayer } from '@ionic-native/youtube-video-player';
 
 import { LockerRoomsPage } from '../pages/locker-rooms/locker-rooms';
@@ -16,9 +15,9 @@ import { PostDetail } from '../pages/post-detail/post-detail';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { YoutubePipe } from '../pipes/youtube/youtube';
+import { PipesModule } from '../pipes/pipes.module';
 
-import { IonicStorageModule, Storage } from '@ionic/storage';
+import { IonicStorageModule } from '@ionic/storage';
 
 @NgModule({
   declarations: [
@@ -28,12 +27,12 @@ import { IonicStorageModule, Storage } from '@ionic/storage';
     TwitterPage,
     HomePage,
     TabsPage,
-    PostDetail,
-    YoutubePipe
+    PostDetail
   ],
   imports: [
     BrowserModule,
     HttpModule,
+    PipesModule,
     IonicModule.forRoot(MyApp),
     IonicStorageModule.forRoot()
   ],
@@ -51,7 +50,6 @@ import { IonicStorageModule, Storage } from '@ionic/storage';
     StatusBar,
     SplashScreen,
     YoutubeVideoPlayer,
-    YtProvider,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
