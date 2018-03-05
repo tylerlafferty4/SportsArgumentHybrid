@@ -12,7 +12,7 @@ import { PodcastsPage } from '../podcasts/podcasts';
 export class TabsPage {
 
   tab1Root = HomePage;
-  tab2Root = LoginPage;
+  tab2Root = LockerRoomsPage;
   tab3Root = TwitterPage;
   tab4Root = PodcastsPage;
 

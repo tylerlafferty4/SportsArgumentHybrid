@@ -23,6 +23,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { PipesModule } from '../pipes/pipes.module';
 
 import { IonicStorageModule } from '@ionic/storage';
+import { InAppBrowser } from '@ionic-native/in-app-browser';
+import { ThemeableBrowser } from '@ionic-native/themeable-browser';
 
 @NgModule({
   declarations: [
@@ -61,6 +63,8 @@ import { IonicStorageModule } from '@ionic/storage';
     YoutubeVideoPlayer,
     WordPressService,
     AuthenticationService,
+    InAppBrowser,
+    ThemeableBrowser,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

@@ -1,7 +1,10 @@
-import { LoadingController, NavController, NavParams } from 'ionic-angular';
+import { AlertController, LoadingController, NavController, NavParams } from 'ionic-angular';
 import { Component } from '@angular/core';
+import { LoginPage } from '../../pages/login/login';
 import { WordPressService } from '../../services/word-press/word-press.service';
+import { AuthenticationService } from '../../services/authentication/authentication.service';
 import { Observable } from "rxjs/Observable";
+import { InAppBrowser } from '@ionic-native/in-app-browser';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/forkJoin';
 
@@ -17,10 +20,13 @@ export class PostDetail {
   morePagesAvailable: boolean = true;
 
   constructor(
-    private nav: NavController,
+    private alertCtrl: AlertController,
+    private navCtrl: NavController,
     private navParams: NavParams,
     private loadingCtrl: LoadingController,
-    private wordPressService: WordPressService
+    private wordPressService: WordPressService,
+    private authenticationService: AuthenticationService,
+    private iab: InAppBrowser
   ) {
     // If we navigated to this page, we will have an item available as a nav param
     // this.selectedItem = navParams.get('item');
@@ -68,8 +74,95 @@ export class PostDetail {
 
   createComment() {
 
+    let alert = this.alertCtrl.create({
+      title: 'Add a comment',
+      message: 'Comments on Mobile is not currently supported, but coming very soon!',
+      buttons: [
+        {
+          text: 'Ok',
+          role: 'cancel',
+          handler: data => {
+            console.log('Okay clicked');
+          }
+        },
+        {
+          text: 'Comment online?',
+          handler: data => {
+            this.iab.create(this.post.link + '#respond', '_blank');
+          }
+        }
+      ]
+    });
+    alert.present();
   }
 }
+    // let user: any;
+
+    // this.authenticationService.getUser()
+    // .then(res => {
+    //   user = res;
+
+    //   let alert = this.alertCtrl.create({
+    //   title: 'Add a comment',
+    //   inputs: [
+    //     {
+    //       name: 'comment',
+    //       placeholder: 'Comment'
+    //     }
+    //   ],
+    //   buttons: [
+    //     {
+    //       text: 'Cancel',
+    //       role: 'cancel',
+    //       handler: data => {
+    //         console.log('Cancel clicked');
+    //       }
+    //     },
+    //     {
+    //       text: 'Accept',
+    //       handler: data => {
+    //         let loading = this.loadingCtrl.create();
+    //         loading.present();
+    //         this.wordPressService.createComment(this.post.id, user, data.comment)
+    //         .subscribe(
+    //           (data) => {
+    //             console.log("ok", data);
+    //             this.getComments();
+    //             loading.dismiss();
+    //           },
+    //           (err) => {
+    //             console.log("err", err);
+    //             loading.dismiss();
+    //           }
+    //         );
+    //       }
+    //     }
+    //   ]
+    // });
+    // alert.present();
+    // },
+    // err => {
+    //   let alert = this.alertCtrl.create({
+    //     title: 'Please login',
+    //     message: 'You need to login in order to comment',
+    //     buttons: [
+    //       {
+    //         text: 'Cancel',
+    //         role: 'cancel',
+    //         handler: () => {
+    //           console.log('Cancel clicked');
+    //         }
+    //       },
+    //       {
+    //         text: 'Login',
+    //         handler: () => {
+    //           this.navCtrl.push(LoginPage);
+    //         }
+    //       }
+    //     ]
+    //   });
+    // alert.present();
+    // });
 
 
 

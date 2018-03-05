@@ -3,6 +3,7 @@ import { NavController} from 'ionic-angular';
 import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
 import { Storage } from '@ionic/storage';
+import { YoutubeVideoPlayer } from '@ionic-native/youtube-video-player';
 
 @Component({
   selector: 'podcasts-page',
@@ -20,20 +21,25 @@ export class PodcastsPage {
     posts: any[] = [];
     onPlaying: boolean = false; 
   
-    constructor(public http: Http, public nav:NavController, private storage: Storage) {
+    constructor(
+        public http: Http, 
+        public nav:NavController,
+        private storage: Storage,
+        private youtube: YoutubeVideoPlayer
+    ) {
         let url = 'https://www.googleapis.com/youtube/v3/search?part=id,snippet&channelId=' + this.channelID + '&q=' + this.searchQuery + '&type=video&order=date&maxResults=' + this.maxResults + '&key=' + this.googleToken;
   
         
         storage.get(this.videosId).then((val) => {
             storage.get(this.dateUpdate).then((dateVal) => {
-                if (dateVal) {
-                    var dateNow = new Date();
-                    var diff = Math.abs(dateVal.getTime() - dateNow.getTime());
-                    var diffDays = Math.ceil(diff / (1000 * 3600 * 24)); 
-                    if (diffDays > 7) {
-                        val = null;
-                    }
-                }
+                // if (dateVal) {
+                //     var dateNow = new Date();
+                //     var diff = Math.abs(dateVal.getTime() - dateNow.getTime());
+                //     var diffDays = Math.ceil(diff / (1000 * 3600 * 24)); 
+                //     if (diffDays > 7) {
+                //         val = null;
+                //     }
+                // }
                 if (val == null) {
                     console.log('Getting videos');
                     // let toast = this.toastCtrl.create({
@@ -61,5 +67,9 @@ export class PodcastsPage {
                 }
             });
         });
+    }
+
+    tappedVideo(item) {
+        this.youtube.openVideo(item.id.videoId);
     }
   }

@@ -37,14 +37,14 @@ export class WordPressService {
 
       createComment(postId, user, comment){
         let header: Headers = new Headers();
-        header.append('Authorization', 'Bearer ' + user.token);
+        // header.append('Authorization', 'Bearer ' + user.token);
     
-        return this.http.post(this.WORDPRESS_REST_API_URL + "comments?token=" + user.token, {
-          author_name: user.displayname,
-          author_email: user.email,
+        return this.http.post(this.WORDPRESS_REST_API_URL + "comments?author_name=Goose&author_email=tylerlafferty4@gmail.com&post=590", {
+          author_name: 'Goose',
+          author_email: 'tylerlafferty4@gmail.com',
           post: postId,
           content: comment
-        },{ headers: header })
-        .map(res => res.json());
+        }, { headers: header })
+            .map(res => res.json());
       }
 }
