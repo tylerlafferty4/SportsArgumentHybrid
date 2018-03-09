@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { LoadingController, NavController } from 'ionic-angular';
 import { PostDetail } from '../post-detail/post-detail';
 import { WordPressService } from '../../services/word-press/word-press.service';
+import { AdMobFree, AdMobFreeBannerConfig } from '@ionic-native/admob-free';
+import { AD_MOB_AUTO_SHOW, AD_MOB_ID, AD_MOB_TESTING } from '../../config/ad-mob-config';
 import 'rxjs/add/operator/map';
 
 @Component({
@@ -13,13 +15,37 @@ export class HomePage {
 	posts: any;
 	public morePagesAvailable;
 
-	constructor( public navCtrl: NavController, private wordPressService: WordPressService, public loadingCtrl: LoadingController ) {
+	constructor( 
+		public navCtrl: NavController,
+		private wordPressService: WordPressService,
+		public loadingCtrl: LoadingController,
+		private adMob: AdMobFree
+	) {
 		this.getItems();
+		this.showBannerAd();
 	}
 
 	ionViewDidLoad() {
 		this.morePagesAvailable = true;
 	}
+
+	async showBannerAd() {
+    try {
+      const bannerConfig: AdMobFreeBannerConfig = {
+        id: AD_MOB_ID, // /2576122064',
+        isTesting: AD_MOB_TESTING,
+        autoShow: AD_MOB_AUTO_SHOW
+      }
+
+      this.adMob.banner.config(bannerConfig);
+
+      const result = await this.adMob.banner.prepare();
+      console.log(result);
+    }
+    catch (e) {
+      console.error(e);
+    }
+  }
 
 	getItems() {
 		let loader = this.loadingCtrl.create({

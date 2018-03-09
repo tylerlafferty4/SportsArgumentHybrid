@@ -3,12 +3,12 @@ page-login {
       background-color: #4682B4
     }
   
-    .title{
-      text-align: center;
-      color: #FFF;
-      margin: 100px 0px 50px;
-      font-size: 30px;
-    }
+    // .title{
+    //   text-align: center;
+    //   color: #FFF;
+    //   margin: 100px 0px 50px;
+    //   font-size: 30px;
+    // }
   
     .skip-login{
       text-align: center;
@@ -21,9 +21,9 @@ page-login {
       }
     }
   
-    .form{
-      margin-top: 50px
-    }
+    // .form{
+    //   margin-top: 50px
+    // }
   
     .login-button{
       margin-top: 30px;
@@ -36,4 +36,40 @@ page-login {
       font-weight: 500;
       text-align: center;
     }
+
+    .login-buttons {
+      margin-top: 50px;
+      text-align: center;
+      margin: auto;
+    }
+
+    .login {
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+      margin-left: 13%;
+      margin-top: 20px;
+      margin-bottom: 20px;
+      display: block;
+      width: 75%;
+    }
+
+    .register {
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+      margin-left: 13%;
+      margin-top: 20px;
+      margin-bottom: 20px;
+      display: block;
+      width: 75%;
+    }
+    
+    .facebook {
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+      margin-left: 13%;
+      margin-top: 20px;
+      margin-bottom: 20px;
+      color: white;
+      background-color: #3B5998;
+      display: block;
+      width: 75%;
+    }
+    
   }

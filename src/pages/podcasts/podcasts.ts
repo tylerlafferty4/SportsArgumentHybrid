@@ -4,6 +4,8 @@ import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
 import { Storage } from '@ionic/storage';
 import { YoutubeVideoPlayer } from '@ionic-native/youtube-video-player';
+import { AdMobFree, AdMobFreeBannerConfig } from '@ionic-native/admob-free';
+import { AD_MOB_AUTO_SHOW, AD_MOB_ID, AD_MOB_TESTING } from '../../config/ad-mob-config';
 
 @Component({
   selector: 'podcasts-page',
@@ -25,13 +27,15 @@ export class PodcastsPage {
         public http: Http, 
         public nav:NavController,
         private storage: Storage,
-        private youtube: YoutubeVideoPlayer
+        private youtube: YoutubeVideoPlayer,
+        private adMob: AdMobFree
     ) {
         let url = 'https://www.googleapis.com/youtube/v3/search?part=id,snippet&channelId=' + this.channelID + '&q=' + this.searchQuery + '&type=video&order=date&maxResults=' + this.maxResults + '&key=' + this.googleToken;
   
+        this.showBannerAd();
         
-        storage.get(this.videosId).then((val) => {
-            storage.get(this.dateUpdate).then((dateVal) => {
+        this.storage.get(this.videosId).then((val) => {
+            this.storage.get(this.dateUpdate).then((dateVal) => {
                 // if (dateVal) {
                 //     var dateNow = new Date();
                 //     var diff = Math.abs(dateVal.getTime() - dateNow.getTime());
@@ -67,6 +71,24 @@ export class PodcastsPage {
                 }
             });
         });
+    }
+
+    async showBannerAd() {
+        try {
+          const bannerConfig: AdMobFreeBannerConfig = {
+            id: AD_MOB_ID, // /2576122064',
+            isTesting: AD_MOB_TESTING,
+            autoShow: AD_MOB_AUTO_SHOW
+          }
+    
+          this.adMob.banner.config(bannerConfig);
+    
+          const result = await this.adMob.banner.prepare();
+          console.log(result);
+        }
+        catch (e) {
+          console.error(e);
+        }
     }
 
     tappedVideo(item) {

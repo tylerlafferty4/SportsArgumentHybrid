@@ -1,9 +1,9 @@
-page-register{
-    .form-content{
-      background-color: #4682B4
+page-register {
+    .invalid {
+        border: 1px solid #ea6153;
     }
-  
-    .form{
-      margin-top: 50px
+
+    .valid {
+        border: 1px solid #00cc00;
     }
-  }
+}

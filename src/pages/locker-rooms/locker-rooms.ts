@@ -1,7 +1,12 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
-import { InAppBrowser } from '@ionic-native/in-app-browser';
-import { ThemeableBrowser, ThemeableBrowserObject, ThemeableBrowserOptions } from '@ionic-native/themeable-browser';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { AddRoomPage } from '../add-room/add-room';
+import { ChatPage } from '../chat/chat';
+import * as firebase from 'firebase';
+import { Storage } from '@ionic/storage';
+import { User, LoginPage } from '../login/login';
+import { AdMobFree, AdMobFreeBannerConfig } from '@ionic-native/admob-free';
+import { AD_MOB_AUTO_SHOW, AD_MOB_ID, AD_MOB_TESTING } from '../../config/ad-mob-config';
 
 @Component({
   selector: 'locker-rooms-page',
@@ -9,76 +14,65 @@ import { ThemeableBrowser, ThemeableBrowserObject, ThemeableBrowserOptions } fro
 })
 export class LockerRoomsPage {
 
-  //  public readyUI: ReadyUI;
-
-  private options: ThemeableBrowserOptions = {
-    statusbar: {
-        color: '#ffffffff'
-    },
-    toolbar: {
-        height: 44,
-        color: '#f0f0f0ff'
-    },
-    title: {
-        color: '#003264ff',
-        showPageTitle: true
-    },
-    backButton: {
-        image: 'back',
-        imagePressed: 'back_pressed',
-        align: 'left',
-        event: 'backPressed'
-    },
-    forwardButton: {
-        image: 'forward',
-        imagePressed: 'forward_pressed',
-        align: 'left',
-        event: 'forwardPressed'
-    },
-    closeButton: {
-        image: 'close',
-        imagePressed: 'close_pressed',
-        align: 'left',
-        event: 'closePressed'
-    },
-    customButtons: [
-        {
-            image: 'share',
-            imagePressed: 'share_pressed',
-            align: 'right',
-            event: 'sharePressed'
-        }
-    ],
-    menu: {
-        image: 'menu',
-        imagePressed: 'menu_pressed',
-        title: 'Test',
-        cancel: 'Cancel',
-        align: 'right',
-        items: [
-            {
-                event: 'helloPressed',
-                label: 'Hello World!'
-            },
-            {
-                event: 'testPressed',
-                label: 'Test!'
-            }
-        ]
-    },
-    backButtonCanClose: true
-};
+    rooms = [];
+    ref = firebase.database().ref('chatrooms/');
 
   public url: string = 'http://sportsargument.com/login';
   
   constructor(
     public navCtrl: NavController,
-    private iab: InAppBrowser,
-    private tb: ThemeableBrowser
+    private navParams: NavParams,
+    private storage: Storage,
+    private adMob: AdMobFree
   ) {
-
+    this.ref.on('value', resp => {
+        this.rooms = [];
+        this.rooms = snapshotToArray(resp);
+    });
+    this.showBannerAd();
   }
 
+  async showBannerAd() {
+    try {
+      const bannerConfig: AdMobFreeBannerConfig = {
+        id: AD_MOB_ID, // /2576122064',
+        isTesting: AD_MOB_TESTING,
+        autoShow: AD_MOB_AUTO_SHOW
+      }
+
+      this.adMob.banner.config(bannerConfig);
+
+      const result = await this.adMob.banner.prepare();
+      console.log(result);
+    }
+    catch (e) {
+      console.error(e);
+    }
+  }
+
+  addRoom() {
+    this.navCtrl.push(AddRoomPage);
+  }
+
+  logout() {
+      firebase.auth().signOut();
+      this.storage.set('userEmail', null);
+      this.navCtrl.setRoot(LoginPage);
+  }
+
+  joinRoom(key, roomName) {
+      console.log('Room Name is -> ' + roomName);
+      
+    let user: User;
+    this.storage.get('userEmail').then((val) => {
+        user = val;
+        this.navCtrl.push(ChatPage, {
+            key: key,
+            roomName: roomName,
+            nickname: user
+        });
+    });
+  }
   // public browser = this.iab.create('https://ionicframework.com/');
 
   
@@ -106,3 +100,15 @@ export class LockerRoomsPage {
   }
 
 }
+
+export const snapshotToArray = snapshot => {
+    let returnArr = [];
+
+    snapshot.forEach(childSnapshot => {
+        let item = childSnapshot.val();
+        item.key = childSnapshot.key;
+        returnArr.push(item);
+    });
+
+    return returnArr;
+};

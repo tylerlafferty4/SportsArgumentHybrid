@@ -1,21 +1,27 @@
-<ion-content padding class="form-content">
-        <!-- <form class="form" [formGroup]="login_form" (ngSubmit)="login(login_form.value)">
-          <ion-label class="title">Welcome back</ion-label>
-          <p class="skip-login"><a (click)="skipLogin()">Click here to skip login!</a></p>
-          <p class="skip-login"><a (click)="goToRegister()">Click here to Register!</a></p>
-          <ion-item>
-            <ion-label color="primary">Username</ion-label>
-            <ion-input type="text" formControlName="username" class="form-controll" required></ion-input>
-          </ion-item>
-      
-          <ion-item>
-            <ion-label color="primary">Password</ion-label>
-            <ion-input type="password" formControlName="password" class="form-controll" required></ion-input>
-          </ion-item>
-          <p class="error-message" *ngIf="error_message">{{error_message}}</p>
-          <button ion-button full class="login-button" [disabled]="!login_form.valid" type="submit">Login</button>
-        </form> -->
-        <button ion-button (click)="signIn()">Sign In</button>
-        <button ion-button (click)="register()">Register</button>
-        <button ion-button (click)="skipLogin()">Continue as Guest</button>
-    </ion-content>
+<ion-header>
+  <ion-navbar color="saRed">
+    <ion-title>Login</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-item>
+    <ion-label floating>Email Address</ion-label>
+    <ion-input type="text" [(ngModel)]="user.email"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label floating>Password</ion-label>
+    <ion-input type="password" [(ngModel)]="user.password"></ion-input>
+  </ion-item>
+
+  <div class="login-buttons">
+    <button ion-button class="login" (click)="login(user)">Login</button>
+    <button ion-button class="facebook" color="light" (click)="facebookLogin()">Facebook Login</button>
+  </div>
+</ion-content>
+<ion-footer>
+  <ion-toolbar color="light">
+   <button ion-button text-only block class="comment-button" color="light" (click)="register()">Not a Member?</button>
+  </ion-toolbar>
+ </ion-footer>

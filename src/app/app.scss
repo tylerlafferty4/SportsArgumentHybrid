@@ -27,3 +27,10 @@
 .bg-style {
     background-color: #d7d9df;
 }
+
+.tabs-md .tab-button[aria-selected=true] {
+    color: #dd0000;
+}
+.tabs-ios .tab-button[aria-selected=true] {
+    color: #dd0000;
+}

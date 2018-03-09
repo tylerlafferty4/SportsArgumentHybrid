@@ -39,13 +39,15 @@ $colors: (
   danger:     #f53d3d,
   light:      #f4f4f4,
   dark:       #222,
-  navigation: #454545
+  navigation: #454545,
+  saRed: #dd0000
 );
 
 // App iOS Variables
 // --------------------------------------------------
 // iOS only Sass variables can go here
 $toolbar-ios-title-text-color: white;
+$tabs-ios-tab-icon-color-active: #dd0000;
 
 
 
@@ -53,6 +55,7 @@ $toolbar-ios-title-text-color: white;
 // --------------------------------------------------
 // Material Design only Sass variables can go here
 $toolbar-md-title-text-color: white;
+$tabs-md-tab-icon-color-active: #dd0000;
 
 
 

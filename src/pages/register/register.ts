@@ -1,59 +1,67 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
-import { Validators, FormBuilder, FormGroup, FormControl } from '@angular/forms';
-import { WordPressService } from '../../services/word-press/word-press.service';
-import { AuthenticationService } from '../../services/authentication/authentication.service';
+import { IonicPage, NavController, Loading, LoadingController, AlertController } from 'ionic-angular';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { HomePage } from '../home/home';
+import { AngularFireAuth } from 'angularfire2/auth';
+import firebase from 'firebase';
+import { Storage } from '@ionic/storage';
+import { LockerRoomsPage } from '../locker-rooms/locker-rooms';
 
 @Component({
   selector: 'page-register',
-  templateUrl: 'register.html'
+  templateUrl: 'register.html',
 })
 export class RegisterPage {
-  register_form: FormGroup;
-
+  public signupForm: FormGroup;
+  public loading: Loading;
   constructor(
-    public navCtrl: NavController,
-    public formBuilder: FormBuilder,
-    public wordpressService: WordPressService,
-    public authenticationService: AuthenticationService
-  ) {}
-
-  ionViewWillLoad() {
-    this.register_form = this.formBuilder.group({
-      username: new FormControl('', Validators.required),
-      password: new FormControl('', Validators.required),
-      displayName: new FormControl('', Validators.required),
-      email: new FormControl('', Validators.required),
-    });
+    public navCtrl: NavController, 
+    // public authProvider: AuthProvider,
+    public formBuilder: FormBuilder, 
+    public loadingCtrl: LoadingController,
+    public alertCtrl: AlertController,
+    private afAuth: AngularFireAuth,
+    private storage: Storage
+  ) {
+      this.signupForm = formBuilder.group({
+        email: ['', 
+          Validators.compose([Validators.required, Validators.pattern('^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$')])],
+        password: ['', 
+          Validators.compose([Validators.minLength(6), Validators.required])]
+      });
   }
 
-  onSubmit(values){
-    // var username: 'Sportsarguments'; // this should be an administrator Username
-    // var password: 'Crede24!'; // this should be an administrator Password
-    // //only authenticated administrators can create users
-    // this.authenticationService.doLogin(username, password)
-    // .subscribe(
-    //   res => {
-    //     let user_data = {
-    //       username: values.username,
-    //       name: values.displayName,
-    //       email: values.email,
-    //       password: values.password
-    //     };
-    //     this.authenticationService.doRegister(user_data, res.json().token)
-    //     .subscribe(
-    //       result => {
-    //         console.log('Success -> ' + result);
-    //       },
-    //       error => {
-    //         console.log('Error -> ' + error);
-    //       }
-    //     );
-     // },
-    //   err => {
-    //     console.log('Err -> ' + err);
-    //   }
-   // )
+  async signupUser() {
+    try {
+      const result = await this.afAuth.auth.createUserWithEmailAndPassword(
+        this.signupForm.value.email,
+        this.signupForm.value.password
+      );
+      if (result) {
+        let user:any = firebase.auth().currentUser;
+           user.sendEmailVerification().then(
+             (success) => {console.log("please verify your email")} 
+           ).catch(
+             (err) => {
+               // this.error = err;
+             }
+           )
+        this.navCtrl.pop();
+      }
+    } catch (e) {
+      let alert = this.alertCtrl.create({
+        title: 'Sports Argument',
+        message: 'Error occurred during registration. Please try again later.',
+        buttons: [{
+          text: 'Ok',
+          role: 'cancel',
+          handler: data => {
+
+          }
+        }]
+      });
+      alert.present();
+    }
   }
 
 }
