@@ -30,6 +30,7 @@ import { ThemeableBrowser } from '@ionic-native/themeable-browser';
 
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuthModule } from 'angularfire2/auth'
+import { FCM } from '@ionic-native/fcm';
 import { Facebook } from '@ionic-native/facebook';
 import { config } from '../config/config';
 
@@ -82,6 +83,7 @@ import { AdMobFree } from '@ionic-native/admob-free';
     ThemeableBrowser,
     AdMobFree,
     Facebook,
+    FCM,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

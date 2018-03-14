@@ -3,11 +3,12 @@
     <ion-title>
       {{roomName}}
     </ion-title>
-    <!-- <ion-buttons end>
-      <button ion-button icon-only (click)="exitChat()">
+    <ion-buttons end>
+      <!-- <button ion-button icon-only (click)="subscribe()">
         <ion-icon name="exit"></ion-icon>
-      </button>
-    </ion-buttons> -->
+      </button> -->
+      <ion-toggle [(ngModel)]="subscribed" (ionChange)="toggleSubscribe()"></ion-toggle>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 

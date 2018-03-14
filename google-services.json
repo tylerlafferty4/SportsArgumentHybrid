@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "102813551545",
+    "firebase_url": "https://fiery-torch-8713.firebaseio.com",
+    "project_id": "fiery-torch-8713",
+    "storage_bucket": "fiery-torch-8713.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:102813551545:android:d485da6e54b85870",
+        "android_client_info": {
+          "package_name": "com.lafferty.sportsargument"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "102813551545-ma4aulmqt22ug0aj4i9qade6ns4380q8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyABDVrtvktQjE7MFvB1puzvvuv_GtWwPcE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

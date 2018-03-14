@@ -2,12 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { NavController, NavParams, Content } from 'ionic-angular';
 import { LockerRoomsPage } from '../locker-rooms/locker-rooms';
 import * as firebase from 'firebase'
-/**
- * Generated class for the ChatPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { FCM } from '@ionic-native/fcm';
 
 @Component({
   selector: 'page-chat',
@@ -26,7 +21,13 @@ export class ChatPage {
 
   user = firebase.auth().currentUser;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  subscribed = true;
+
+  constructor(
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    public fcm: FCM
+  ) {
     
     this.roomkey = this.navParams.get('key');
     this.roomName = this.navParams.get('roomName');
@@ -54,6 +55,15 @@ export class ChatPage {
         }
       }, 1000);
     });
+  }
+
+  toggleSubscribe() {
+    let room = this.roomName.trim();
+    if (this.subscribed) {
+      this.fcm.subscribeToTopic(room);
+    } else {
+      this.fcm.unsubscribeFromTopic(room);
+    }
   }
 
   sendMessage() {

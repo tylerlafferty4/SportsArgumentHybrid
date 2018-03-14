@@ -24,6 +24,7 @@
     "@ionic-native/admob-free": "^4.5.3",
     "@ionic-native/core": "4.4.0",
     "@ionic-native/facebook": "^4.5.3",
+    "@ionic-native/fcm": "^4.5.3",
     "@ionic-native/in-app-browser": "^4.5.3",
     "@ionic-native/splash-screen": "4.4.0",
     "@ionic-native/status-bar": "4.4.0",
@@ -76,7 +77,8 @@
       "cordova-plugin-facebook4": {
         "APP_ID": "1704647863089819",
         "APP_NAME": "SportsArgument"
-      }
+      },
+      "cordova-plugin-fcm": {}
     },
     "platforms": [
       "ios",

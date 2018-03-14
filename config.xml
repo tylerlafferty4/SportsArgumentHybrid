@@ -98,4 +98,5 @@
         <variable name="APP_ID" value="1704647863089819" />
         <variable name="APP_NAME" value="SportsArgument" />
     </plugin>
+    <plugin name="cordova-plugin-fcm" spec="^2.1.2" />
 </widget>
