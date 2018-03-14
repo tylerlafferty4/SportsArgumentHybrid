@@ -3,9 +3,10 @@ import { IonicPage, NavController, Loading, LoadingController, AlertController }
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HomePage } from '../home/home';
 import { AngularFireAuth } from 'angularfire2/auth';
-import firebase from 'firebase';
+import * as firebase from 'firebase';
 import { Storage } from '@ionic/storage';
 import { LockerRoomsPage } from '../locker-rooms/locker-rooms';
+import { User } from '@firebase/auth-types';
 
 @Component({
   selector: 'page-register',
@@ -14,6 +15,9 @@ import { LockerRoomsPage } from '../locker-rooms/locker-rooms';
 export class RegisterPage {
   public signupForm: FormGroup;
   public loading: Loading;
+
+  ref = firebase.database().ref('displayNames/');
+
   constructor(
     public navCtrl: NavController, 
     // public authProvider: AuthProvider,
@@ -26,6 +30,7 @@ export class RegisterPage {
       this.signupForm = formBuilder.group({
         email: ['', 
           Validators.compose([Validators.required, Validators.pattern('^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$')])],
+        displayName:  ['', Validators.required],
         password: ['', 
           Validators.compose([Validators.minLength(6), Validators.required])]
       });
@@ -38,9 +43,32 @@ export class RegisterPage {
         this.signupForm.value.password
       );
       if (result) {
-        let user:any = firebase.auth().currentUser;
+        let user:User = firebase.auth().currentUser;
+        user.updateProfile({
+          displayName: this.signupForm.value.displayName,
+          photoURL: ''
+        });
            user.sendEmailVerification().then(
-             (success) => {console.log("please verify your email")} 
+             (success) => {
+               console.log("please verify your email")
+               
+              //  let newData = this.ref.push();
+              //  newData.set({
+              //    displayName: this.signupForm.value.displayName
+              //  });
+               let alert = this.alertCtrl.create({
+                title: 'Sports Argument',
+                message: 'Please verify your email address before logging in.',
+                buttons: [{
+                  text: 'Ok',
+                  role: 'cancel',
+                  handler: data => {
+        
+                  }
+                }]
+              });
+              alert.present();
+              } 
            ).catch(
              (err) => {
                // this.error = err;

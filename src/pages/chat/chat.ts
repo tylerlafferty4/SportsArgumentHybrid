@@ -24,10 +24,15 @@ export class ChatPage {
   nickname: string;
   offStatus: boolean = false;
 
+  user = firebase.auth().currentUser;
+
   constructor(public navCtrl: NavController, public navParams: NavParams) {
+    
     this.roomkey = this.navParams.get('key');
     this.roomName = this.navParams.get('roomName');
-    this.nickname = this.navParams.get('nickname');
+    let temp = this.navParams.get('nickname');
+    // let split = this.nickname.split("@", 2);
+    this.nickname = this.user.displayName;
     this.data.type = 'message';
     this.data.nickname = this.nickname;
   

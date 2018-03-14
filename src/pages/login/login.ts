@@ -77,7 +77,12 @@ export class LoginPage {
         .then( success => { 
           console.log("Firebase success: " + JSON.stringify(success)); 
           // this.storage.set('userEmail', user.email);
-          this.navCtrl.setRoot(LockerRoomsPage);
+          let display = firebase.auth().currentUser.displayName;
+          if (display === null || display === '') {
+            this.presentDisplayPrompt();
+          } else {
+            this.navCtrl.setRoot(LockerRoomsPage);
+          }
         });
 
     }).catch((error) => { console.log(error) });
@@ -85,6 +90,38 @@ export class LoginPage {
  
   register() {
     this.navCtrl.push(RegisterPage);
+  }
+
+  presentDisplayPrompt() {
+    let user = firebase.auth().currentUser;
+    let alert = this.alertCtrl.create({
+      title: 'Please enter a nickname',
+      inputs: [
+        {
+          name: 'nickname',
+          placeholder: 'Nickname'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: data => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Save',
+          handler: data => {
+            user.updateProfile({
+              displayName: data.nickname,
+              photoURL: ''
+            });
+          }
+        }
+      ]
+    });
+    alert.present();
   }
 
   presentError(user: User, failed: string) {
