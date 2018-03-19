@@ -1,4 +1,10 @@
 page-chat {
+  .toggle {
+    background-color: #454545;
+    ion-toggle {
+      background-color: #454545;
+    }
+  }
     ion-content {
         background: url(../assets/imgs/chat-back.png) no-repeat center center fixed;
         background-size: cover;

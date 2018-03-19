@@ -3,7 +3,7 @@ import { LoadingController, NavController } from 'ionic-angular';
 import { PostDetail } from '../post-detail/post-detail';
 import { WordPressService } from '../../services/word-press/word-press.service';
 import { AdMobFree, AdMobFreeBannerConfig } from '@ionic-native/admob-free';
-import { AD_MOB_AUTO_SHOW, AD_MOB_ID, AD_MOB_TESTING } from '../../config/ad-mob-config';
+import { AD_MOB_SHOW_ADS, AD_MOB_AUTO_SHOW, AD_MOB_ID, AD_MOB_TESTING } from '../../config/ad-mob-config';
 import 'rxjs/add/operator/map';
 
 @Component({
@@ -22,7 +22,9 @@ export class HomePage {
 		private adMob: AdMobFree
 	) {
 		this.getItems();
-		this.showBannerAd();
+		if (AD_MOB_SHOW_ADS) {
+      this.showBannerAd();
+    }
 	}
 
 	ionViewDidLoad() {

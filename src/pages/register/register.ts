@@ -1,11 +1,8 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, Loading, LoadingController, AlertController } from 'ionic-angular';
+import { NavController, Loading, LoadingController, AlertController } from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { HomePage } from '../home/home';
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase';
-import { Storage } from '@ionic/storage';
-import { LockerRoomsPage } from '../locker-rooms/locker-rooms';
 import { User } from '@firebase/auth-types';
 
 @Component({
@@ -24,8 +21,7 @@ export class RegisterPage {
     public formBuilder: FormBuilder, 
     public loadingCtrl: LoadingController,
     public alertCtrl: AlertController,
-    private afAuth: AngularFireAuth,
-    private storage: Storage
+    private afAuth: AngularFireAuth
   ) {
       this.signupForm = formBuilder.group({
         email: ['', 

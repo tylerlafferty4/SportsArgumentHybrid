@@ -5,7 +5,7 @@ import 'rxjs/add/operator/map';
 import { Storage } from '@ionic/storage';
 import { YoutubeVideoPlayer } from '@ionic-native/youtube-video-player';
 import { AdMobFree, AdMobFreeBannerConfig } from '@ionic-native/admob-free';
-import { AD_MOB_AUTO_SHOW, AD_MOB_ID, AD_MOB_TESTING } from '../../config/ad-mob-config';
+import { AD_MOB_SHOW_ADS, AD_MOB_AUTO_SHOW, AD_MOB_ID, AD_MOB_TESTING } from '../../config/ad-mob-config';
 
 @Component({
   selector: 'podcasts-page',
@@ -32,7 +32,9 @@ export class PodcastsPage {
     ) {
         let url = 'https://www.googleapis.com/youtube/v3/search?part=id,snippet&channelId=' + this.channelID + '&q=' + this.searchQuery + '&type=video&order=date&maxResults=' + this.maxResults + '&key=' + this.googleToken;
   
-        this.showBannerAd();
+        if (AD_MOB_SHOW_ADS) {
+            this.showBannerAd();
+        }
         
         this.storage.get(this.videosId).then((val) => {
             this.storage.get(this.dateUpdate).then((dateVal) => {
@@ -70,6 +72,18 @@ export class PodcastsPage {
                     this.posts = val
                 }
             });
+        });
+    }
+
+    doRefresh(refresher) {
+        this.posts = [];
+        let url = 'https://www.googleapis.com/youtube/v3/search?part=id,snippet&channelId=' + this.channelID + '&q=' + this.searchQuery + '&type=video&order=date&maxResults=' + this.maxResults + '&key=' + this.googleToken;
+        this.http.get(url).map(res => res.json()).subscribe(data => {
+            this.posts = this.posts.concat(data.items);
+            this.storage.set(this.videosId, this.posts);
+            let date1 = new Date();
+            this.storage.set(this.dateUpdate, date1);
+            refresher.complete();
         });
     }
 

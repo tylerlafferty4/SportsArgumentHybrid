@@ -7,7 +7,9 @@
       <!-- <button ion-button icon-only (click)="subscribe()">
         <ion-icon name="exit"></ion-icon>
       </button> -->
-      <ion-toggle [(ngModel)]="subscribed" (ionChange)="toggleSubscribe()"></ion-toggle>
+      <!-- <ion-item class="toggle">
+        <ion-toggle [(ngModel)]="subscribed" (ionChange)="toggleSubscribe()"></ion-toggle>
+      </ion-item> -->
     </ion-buttons>
   </ion-navbar>
 </ion-header>
@@ -28,7 +30,7 @@
           </div>
         </div>
         <div class="chat-message" text-left *ngIf="chat.user !== nickname">
-          <div class="left-bubble">
+          <div class="left-bubble" (click)="tappedMessage(chat)">
             <span class="msg-name">{{chat.user}}</span>
             <span class="msg-date">{{chat.sendDate | date:'short'}}</span>
             <p text-wrap>{{chat.message}}</p>

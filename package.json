@@ -25,6 +25,7 @@
     "@ionic-native/core": "4.4.0",
     "@ionic-native/facebook": "^4.5.3",
     "@ionic-native/fcm": "^4.5.3",
+    "@ionic-native/http": "^4.5.3",
     "@ionic-native/in-app-browser": "^4.5.3",
     "@ionic-native/splash-screen": "4.4.0",
     "@ionic-native/status-bar": "4.4.0",
@@ -38,9 +39,11 @@
     "cordova-browser": "5.0.3",
     "cordova-ios": "4.5.4",
     "cordova-plugin-admob-free": "^0.14.0",
+    "cordova-plugin-advanced-http": "^1.11.0",
     "cordova-plugin-device": "^2.0.1",
     "cordova-plugin-facebook4": "^1.9.1",
     "cordova-plugin-fcm": "^2.1.2",
+    "cordova-plugin-file": "^6.0.1",
     "cordova-plugin-inappbrowser": "^2.0.2",
     "cordova-plugin-ionic-keyboard": "^2.0.5",
     "cordova-plugin-ionic-webview": "^1.1.16",
@@ -78,12 +81,13 @@
         "APP_ID": "1704647863089819",
         "APP_NAME": "SportsArgument"
       },
-      "cordova-plugin-fcm": {}
+      "cordova-plugin-fcm": {},
+      "cordova-plugin-advanced-http": {}
     },
     "platforms": [
       "ios",
-      "android",
-      "browser"
+      "browser",
+      "android"
     ]
   }
 }

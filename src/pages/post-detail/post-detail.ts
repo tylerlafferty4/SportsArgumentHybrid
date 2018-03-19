@@ -1,8 +1,6 @@
-import { AlertController, LoadingController, NavController, NavParams } from 'ionic-angular';
+import { AlertController, LoadingController, NavParams } from 'ionic-angular';
 import { Component } from '@angular/core';
-import { LoginPage } from '../../pages/login/login';
 import { WordPressService } from '../../services/word-press/word-press.service';
-import { AuthenticationService } from '../../services/authentication/authentication.service';
 import { Observable } from "rxjs/Observable";
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 import 'rxjs/add/operator/map';
@@ -21,11 +19,9 @@ export class PostDetail {
 
   constructor(
     private alertCtrl: AlertController,
-    private navCtrl: NavController,
     private navParams: NavParams,
     private loadingCtrl: LoadingController,
     private wordPressService: WordPressService,
-    private authenticationService: AuthenticationService,
     private iab: InAppBrowser
   ) {
     // If we navigated to this page, we will have an item available as a nav param

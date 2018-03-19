@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { NavController } from 'ionic-angular';
 import { AddRoomPage } from '../add-room/add-room';
 import { ChatPage } from '../chat/chat';
 import * as firebase from 'firebase';
 import { Storage } from '@ionic/storage';
 import { User, LoginPage } from '../login/login';
 import { AdMobFree, AdMobFreeBannerConfig } from '@ionic-native/admob-free';
-import { AD_MOB_AUTO_SHOW, AD_MOB_ID, AD_MOB_TESTING } from '../../config/ad-mob-config';
+import { AD_MOB_SHOW_ADS, AD_MOB_AUTO_SHOW, AD_MOB_ID, AD_MOB_TESTING } from '../../config/ad-mob-config';
 
 @Component({
   selector: 'locker-rooms-page',
@@ -21,7 +21,6 @@ export class LockerRoomsPage {
   
   constructor(
     public navCtrl: NavController,
-    private navParams: NavParams,
     private storage: Storage,
     private adMob: AdMobFree
   ) {
@@ -29,7 +28,9 @@ export class LockerRoomsPage {
         this.rooms = [];
         this.rooms = snapshotToArray(resp);
     });
-    this.showBannerAd();
+    if (AD_MOB_SHOW_ADS) {
+      this.showBannerAd();
+    }
   }
 
   async showBannerAd() {

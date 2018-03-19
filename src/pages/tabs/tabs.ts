@@ -1,6 +1,4 @@
 import { Component } from '@angular/core';
-
-import { LockerRoomsPage } from '../locker-rooms/locker-rooms';
 import { TwitterPage } from '../twitter/twitter';
 import { HomePage } from '../home/home';
 import { LoginPage } from '../login/login';

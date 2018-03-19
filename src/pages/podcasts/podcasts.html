@@ -7,6 +7,14 @@
 </ion-header>
 
 <ion-content class="bg-style">
+        <ion-refresher (ionRefresh)="doRefresh($event)">
+                <ion-refresher-content
+                pullingIcon="arrow-dropdown"
+                pullingText="Pull to refresh"
+                refreshingSpinner="circles"
+                refreshingText="Updating content">
+              </ion-refresher-content>
+            </ion-refresher>
     <ion-card *ngFor="let item of posts" (click)="tappedVideo(item)">
         <ion-card-header>
             {{item.snippet.title}}

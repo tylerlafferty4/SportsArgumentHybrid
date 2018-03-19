@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
+import { AdMobFree, AdMobFreeBannerConfig } from '@ionic-native/admob-free';
+import { AD_MOB_SHOW_ADS, AD_MOB_AUTO_SHOW, AD_MOB_ID, AD_MOB_TESTING } from '../../config/ad-mob-config';
 
 @Component({
   selector: 'twitter-page',
@@ -7,8 +9,28 @@ import { NavController } from 'ionic-angular';
 })
 export class TwitterPage {
 
-  constructor(public navCtrl: NavController) {
+  constructor(public navCtrl: NavController, private adMob: AdMobFree) {
+    if (AD_MOB_SHOW_ADS) {
+      this.showBannerAd();
+    }
+  }
 
+  async showBannerAd() {
+    try {
+      const bannerConfig: AdMobFreeBannerConfig = {
+        id: AD_MOB_ID, // /2576122064',
+        isTesting: AD_MOB_TESTING,
+        autoShow: AD_MOB_AUTO_SHOW
+      }
+
+      this.adMob.banner.config(bannerConfig);
+
+      const result = await this.adMob.banner.prepare();
+      console.log(result);
+    }
+    catch (e) {
+      console.error(e);
+    }
   }
 
   ngAfterViewInit() {

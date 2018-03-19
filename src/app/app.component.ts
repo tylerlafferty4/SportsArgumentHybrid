@@ -1,5 +1,5 @@
-import { Component, ViewChild } from '@angular/core';
-import { Platform, NavController } from 'ionic-angular';
+import { Component } from '@angular/core';
+import { Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { FCM } from '@ionic-native/fcm';
@@ -7,8 +7,6 @@ import { FCM } from '@ionic-native/fcm';
 import { TabsPage } from '../pages/tabs/tabs';
 
 import * as firebase from 'firebase';
-
-declare var ReadyUI;
 
 const config = {
   apiKey: "AIzaSyC2rXKC1vPrcky103LbHmti30w-2vZWv6A",

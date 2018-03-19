@@ -15,9 +15,14 @@
     <ion-input type="password" [(ngModel)]="user.password"></ion-input>
   </ion-item>
 
+  <ion-item text-wrap class="item-text-wrap">
+    <ion-label class="agree-text">I agree to not provide any objectionable content or be abusive to other users. I understand that if I do, I risk the possibility of being banned.</ion-label>
+    <ion-checkbox [(ngModel)]="agreement"></ion-checkbox>
+  </ion-item>
+
   <div class="login-buttons">
-    <button ion-button class="login" (click)="login(user)">Login</button>
-    <button ion-button class="facebook" color="light" (click)="facebookLogin()">Facebook Login</button>
+    <button ion-button class="login" [disabled]="!agreement" (click)="login(user)">Login</button>
+    <button ion-button class="facebook" color="light" [disabled]="!agreement" (click)="facebookLogin()">Facebook Login</button>
   </div>
 </ion-content>
 <ion-footer>

@@ -7,9 +7,9 @@
 	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
 	<string>ca-app-pub-3940256099942544/4411468910</string>
 	<key>CLIENT_ID</key>
-	<string>102813551545-ln6ubm1u7vhi3hvnh2cunntqrjfrk50u.apps.googleusercontent.com</string>
+	<string>102813551545-cl8der4r1bqulp1792t1gb583iscilpv.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.102813551545-ln6ubm1u7vhi3hvnh2cunntqrjfrk50u</string>
+	<string>com.googleusercontent.apps.102813551545-cl8der4r1bqulp1792t1gb583iscilpv</string>
 	<key>API_KEY</key>
 	<string>AIzaSyCrjesSO1YkoXs4Tvfjs4a00fl_0c5o2Io</string>
 	<key>GCM_SENDER_ID</key>
@@ -17,7 +17,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.lafferty.sportsargument</string>
+	<string>com.lafferty.SportsArgument</string>
 	<key>PROJECT_ID</key>
 	<string>fiery-torch-8713</string>
 	<key>STORAGE_BUCKET</key>
@@ -33,7 +33,7 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:102813551545:ios:d485da6e54b85870</string>
+	<string>1:102813551545:ios:1112978e9ee57630</string>
 	<key>DATABASE_URL</key>
 	<string>https://fiery-torch-8713.firebaseio.com</string>
 </dict>

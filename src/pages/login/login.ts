@@ -1,15 +1,13 @@
 import { Component } from '@angular/core';
 import { LockerRoomsPage } from '../locker-rooms/locker-rooms';
 import { RegisterPage } from '../register/register'
-import { AlertController, NavParams, NavController, LoadingController } from 'ionic-angular';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { WordPressService } from '../../services/word-press/word-press.service';
-import { AuthenticationService } from '../../services/authentication/authentication.service';
-import { InAppBrowser } from '@ionic-native/in-app-browser';
+import { AlertController, NavParams, NavController } from 'ionic-angular';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { Storage } from '@ionic/storage';
 import { Facebook } from '@ionic-native/facebook';
 import firebase from 'firebase';
+import { AdMobFree, AdMobFreeBannerConfig } from '@ionic-native/admob-free';
+import { AD_MOB_SHOW_ADS, AD_MOB_AUTO_SHOW, AD_MOB_ID, AD_MOB_TESTING } from '../../config/ad-mob-config';
 
 export interface User {
   email: string;
@@ -22,6 +20,7 @@ export interface User {
 })
 export class LoginPage {
   user = {} as User;
+  agreement = false;
 
   constructor(
     private afAuth: AngularFireAuth,
@@ -29,13 +28,35 @@ export class LoginPage {
     public navParams: NavParams,
     private storage: Storage,
     private alertCtrl: AlertController,
-    public facebook: Facebook
+    public facebook: Facebook,
+    private adMob: AdMobFree
   ) {
     this.storage.get('userEmail').then((val) => {
       if (val) {
         this.navCtrl.setRoot(LockerRoomsPage);
       }
-  });
+    });
+    if (AD_MOB_SHOW_ADS) {
+      this.showBannerAd();
+    }
+  }
+
+  async showBannerAd() {
+    try {
+      const bannerConfig: AdMobFreeBannerConfig = {
+        id: AD_MOB_ID, // /2576122064',
+        isTesting: AD_MOB_TESTING,
+        autoShow: AD_MOB_AUTO_SHOW
+      }
+
+      this.adMob.banner.config(bannerConfig);
+
+      const result = await this.adMob.banner.prepare();
+      console.log(result);
+    }
+    catch (e) {
+      console.error(e);
+    }
   }
  
   async login(user: User) {
