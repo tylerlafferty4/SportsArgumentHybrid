@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Invite User</ion-title>
+    <ion-buttons end>
+      <button ion-button color="light" (click)="sendInvite()">
+          Send Invite
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content>
+  <ion-searchbar 
+    [(ngModel)]="searchTxt"
+    (ionInput)="onInput()"
+    placeholder="Search by Username or Email">
+  </ion-searchbar>
+  <ion-list *ngIf="!searching">
+    <ion-item  *ngFor="let user of users" text-wrap>
+      <ion-checkbox (ionChange)="toggleUser(user.key)"></ion-checkbox>
+     <ion-label>{{user.displayName}}</ion-label>
+    </ion-item>
+  </ion-list>
+  <ion-list *ngIf="searching">
+      <ion-item *ngFor="let user of filteredUsers" text-wrap>
+          <ion-checkbox (ionChange)="toggleUser(user.key)"></ion-checkbox>
+         <ion-label>{{user.displayName}}</ion-label>
+      </ion-item>
+  </ion-list>
+</ion-content>

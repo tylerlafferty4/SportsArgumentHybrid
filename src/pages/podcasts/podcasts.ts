@@ -75,6 +75,11 @@ export class PodcastsPage {
         });
     }
 
+
+    ionViewDidEnter() {
+        this.adMob.banner.show();
+    }
+
     doRefresh(refresher) {
         this.posts = [];
         let url = 'https://www.googleapis.com/youtube/v3/search?part=id,snippet&channelId=' + this.channelID + '&q=' + this.searchQuery + '&type=video&order=date&maxResults=' + this.maxResults + '&key=' + this.googleToken;

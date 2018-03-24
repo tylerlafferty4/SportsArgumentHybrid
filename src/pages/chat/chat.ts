@@ -20,6 +20,7 @@ export class ChatPage {
   roomkey: string;
   roomName: string;
   nickname: string;
+  isPrivate: boolean;
   offStatus: boolean = false;
 
   user = firebase.auth().currentUser;
@@ -44,23 +45,46 @@ export class ChatPage {
     
     this.roomkey = this.navParams.get('key');
     this.roomName = this.navParams.get('roomName');
+    this.isPrivate = this.navParams.get('isPrivate');
     // let temp = this.navParams.get('nickname');
     // let split = this.nickname.split("@", 2);
     this.nickname = this.user.displayName;
     this.data.type = 'message';
     this.data.nickname = this.nickname;
   
-    firebase.database().ref('chatrooms/'+this.roomkey+'/chats').on('value', resp => {
-      this.chats = [];
-      this.chats = snapshotToArray(resp);
-      setTimeout(() => {
-        if(this.offStatus === false) {
-          this.content.scrollToBottom(300);
-        }
-      }, 1000);
-    });
+    if (this.isPrivate) {
+      firebase.database().ref('privaterooms/'+this.roomkey+'/chats').on('value', resp => {
+        this.chats = [];
+        this.chats = snapshotToArray(resp);
+        setTimeout(() => {
+          if(this.offStatus === false) {
+            this.content.scrollToBottom(300);
+          }
+        }, 1000);
+      });
+    } else {
+      firebase.database().ref('chatrooms/'+this.roomkey+'/chats').on('value', resp => {
+        this.chats = [];
+        this.chats = snapshotToArray(resp);
+        setTimeout(() => {
+          if(this.offStatus === false) {
+            this.content.scrollToBottom(300);
+          }
+        }, 1000);
+      });
+    }
+    // if (AD_MOB_SHOW_ADS) {
+    //   this.showBannerAd();
+    // }
     if (AD_MOB_SHOW_ADS) {
-      this.showBannerAd();
+      this.adMob.banner.hide();
+    }
+  }
+
+
+  ionViewDidEnter() {
+    if (AD_MOB_SHOW_ADS) {
+      this.adMob.banner.hide();
     }
   }
 
@@ -123,7 +147,14 @@ export class ChatPage {
       alert.present();
 
     } else {
-      let newData = firebase.database().ref('chatrooms/'+this.roomkey+'/chats').push();
+      var newData: any;
+      console.log('Private -> ' + this.isPrivate);
+      
+      if (this.isPrivate) {
+        newData = firebase.database().ref('privaterooms/'+this.roomkey+'/chats').push();
+      } else {
+        newData = firebase.database().ref('chatrooms/'+this.roomkey+'/chats').push();
+      }
       newData.set({
         type: this.data.type,
         user: this.data.nickname,
@@ -131,9 +162,24 @@ export class ChatPage {
         message: this.data.message,
         sendDate: Date()
       });
+      if (!this.isPrivate) {
+        this.updateMessageCount();
+      }
+      this.fcm.subscribeToTopic(this.roomkey);
       this.sendMessageNotification();
       this.data.message = '';
     }
+  }
+
+  updateMessageCount() {
+    let newData = firebase.database().ref('chatrooms/'+this.roomkey).push().key;
+    var dataCount = {
+      messageCount: this.chats.length,
+      dateSent: Date()
+    };
+    var updates = {};
+    updates['infoUpdate'] = dataCount;
+    firebase.database().ref('chatrooms/'+this.roomkey).update(updates);
   }
 
   sendMessageNotification() {
@@ -144,19 +190,17 @@ export class ChatPage {
 
     let body = {
       to: '/topics/'+this.roomkey,
-      body: 'New Message',
-      title: 'There is a new message in '+this.roomName,
-      priority: 'high'
+      priority: 'high',
+      notification: {
+        body: 'There is a new message in '+this.roomName,
+        title: 'New Message'
+      },
+      data: {
+        roomkey: this.roomkey
+      }
     }
-
     console.log('Sending notification');
     this.http.post('https://fcm.googleapis.com/fcm/send', JSON.stringify(body), {headers: headers})
-    // .then(data => {
-    //   console.log('Request success -> ' + data.data);
-    // })
-    // .catch(error => {
-    //   console.log('Request failed -> ' + error.status);
-    // });
       .map(res => {
         console.log('Response -> ' + res.json())
       })

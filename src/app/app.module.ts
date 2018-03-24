@@ -17,6 +17,7 @@ import { TabsPage } from '../pages/tabs/tabs';
 import { PostDetail } from '../pages/post-detail/post-detail';
 import { AddRoomPage } from '../pages/add-room/add-room';
 import { ChatPage } from '../pages/chat/chat';
+import { InviteUserPage } from '../pages/invite-user/invite-user';
 
 import { AuthenticationService } from '../services/authentication/authentication.service';
 import { WordPressService } from '../services/word-press/word-press.service';
@@ -49,7 +50,8 @@ import { AdMobFree } from '@ionic-native/admob-free';
     LoginPage,
     RegisterPage,
     ChatPage,
-    AddRoomPage
+    AddRoomPage,
+    InviteUserPage
   ],
   imports: [
     BrowserModule,
@@ -72,7 +74,8 @@ import { AdMobFree } from '@ionic-native/admob-free';
     LoginPage, 
     RegisterPage,
     AddRoomPage,
-    ChatPage
+    ChatPage,
+    InviteUserPage
   ],
   providers: [
     StatusBar,

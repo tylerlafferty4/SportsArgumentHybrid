@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { AlertController, NavController, NavParams, Alert } from 'ionic-angular';
 import * as firebase from 'firebase';
 
 @Component({
@@ -8,10 +8,19 @@ import * as firebase from 'firebase';
 })
 export class AddRoomPage {
 
-  data = { roomname:'' };
+  data = { roomname:'', privateRoom:false };
   ref = firebase.database().ref('chatrooms/');
+  privateRef = firebase.database().ref('privaterooms/');
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  user = firebase.auth().currentUser;
+
+  privateRoom = false
+
+  constructor(
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    private alertCtrl: AlertController
+  ) {
   }
 
   ionViewDidLoad() {
@@ -19,11 +28,41 @@ export class AddRoomPage {
   }
 
   addRoom() {
-    let newData = this.ref.push();
-    newData.set({
-      roomname:this.data.roomname
-    });
-    this.navCtrl.pop();
+    if (this.data.roomname === '') {
+      let alert = this.alertCtrl.create({
+        title: 'Sports Argument',
+        message: 'You must set a Room Name',
+        buttons: [
+          {
+            text: 'Ok',
+            role: 'cancel',
+            handler: data => {
+
+            }
+          }
+        ]
+      });
+      alert.present();
+    } else {
+      if (this.data.privateRoom) {
+        let newData = this.privateRef.push();
+        newData.set({
+          private: true,
+          roomname: this.data.roomname,
+          owner: this.user.email
+        });
+      } else {
+        let newData = this.ref.push();
+        newData.set({
+          roomname:this.data.roomname
+        });
+      }
+      
+      this.navCtrl.pop();
+    }
   }
 
+  togglePrivate() {
+    this.privateRoom = !this.privateRoom;
+  }
 }

@@ -15,6 +15,12 @@ export class TwitterPage {
     }
   }
 
+  ionViewDidEnter() {
+    if (AD_MOB_SHOW_ADS) {
+			this.adMob.banner.show();
+		}
+  }
+
   async showBannerAd() {
     try {
       const bannerConfig: AdMobFreeBannerConfig = {

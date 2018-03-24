@@ -27,6 +27,13 @@ export class HomePage {
     }
 	}
 
+
+  ionViewDidEnter() {
+		if (AD_MOB_SHOW_ADS) {
+			this.adMob.banner.show();
+		}
+	}
+	
 	ionViewDidLoad() {
 		this.morePagesAvailable = true;
 	}

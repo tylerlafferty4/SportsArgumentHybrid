@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { AlertController, NavController } from 'ionic-angular';
 import { AddRoomPage } from '../add-room/add-room';
 import { ChatPage } from '../chat/chat';
 import * as firebase from 'firebase';
@@ -7,6 +7,7 @@ import { Storage } from '@ionic/storage';
 import { User, LoginPage } from '../login/login';
 import { AdMobFree, AdMobFreeBannerConfig } from '@ionic-native/admob-free';
 import { AD_MOB_SHOW_ADS, AD_MOB_AUTO_SHOW, AD_MOB_ID, AD_MOB_TESTING } from '../../config/ad-mob-config';
+import { InviteUserPage } from '../invite-user/invite-user';
 
 @Component({
   selector: 'locker-rooms-page',
@@ -14,23 +15,85 @@ import { AD_MOB_SHOW_ADS, AD_MOB_AUTO_SHOW, AD_MOB_ID, AD_MOB_TESTING } from '..
 })
 export class LockerRoomsPage {
 
+  user = firebase.auth().currentUser;
     rooms = [];
+    privaterooms = [];
     ref = firebase.database().ref('chatrooms/');
+    privateref = firebase.database().ref('privaterooms/');// .orderByChild('key/key/messageCount');
 
   public url: string = 'http://sportsargument.com/login';
   
   constructor(
     public navCtrl: NavController,
     private storage: Storage,
-    private adMob: AdMobFree
+    private adMob: AdMobFree,
+    private alertCtrl: AlertController
   ) {
     this.ref.on('value', resp => {
         this.rooms = [];
         this.rooms = snapshotToArray(resp);
+        this.determineRoomSort();
+    });
+    this.privateref.on('value', resp => {
+      this.privaterooms = [];
+      this.privaterooms = snapshotToArray(resp);
+      this.determinePrivateRooms();
     });
     if (AD_MOB_SHOW_ADS) {
       this.showBannerAd();
     }
+  }
+
+  determinePrivateRooms() {
+    let myPrivate = [];
+    for(let room of this.privaterooms) {
+      if (room.owner === this.user.email) {
+        myPrivate.push(room);
+      } else {// if (room.users.indexOf(this.user.email) > -1) {
+        firebase.database().ref('privaterooms/'+room.key+'/users').on('value', resp => {
+          let privates = snapshotToArray(resp);
+          for(let item of privates) {
+            if (item.userEmail === this.user.email) {
+              myPrivate.push(room);
+            }
+          }
+        });
+       // myPrivate.push(room);
+      }
+    }
+    this.privaterooms = myPrivate;
+  }
+
+  determineRoomSort() {
+    let tempRooms = [];
+    let noDataRooms = [];
+    console.log('Rooms -> ' + this.rooms.length);
+    for(let room of this.rooms) {
+      if (room.infoUpdate) {
+        tempRooms.push(room);
+      } else {
+        noDataRooms.push(room);
+      }
+    }
+    console.log('Temp Rooms -> ' + tempRooms.length);
+    
+    // tempRooms.sort((n1,n2) => n2.infoUpdate.messageCount -  n1.infoUpdate.messageCount);
+    tempRooms.sort(function(a,b) { 
+      return new Date(b.infoUpdate.dateSent).getTime() - new Date(a.infoUpdate.dateSent).getTime();
+    });
+  
+    this.rooms = tempRooms;
+    if (noDataRooms.length > 0) {
+      for(let room of noDataRooms) {
+        this.rooms.unshift(room);
+      }
+    }
+  }
+
+  ionViewDidEnter() {
+    if (AD_MOB_SHOW_ADS) {
+			this.adMob.banner.show();
+		}
   }
 
   async showBannerAd() {
@@ -51,6 +114,12 @@ export class LockerRoomsPage {
     }
   }
 
+  inviteUser(roomKey) {
+    this.navCtrl.push(InviteUserPage, {
+      roomkey: roomKey
+    });
+  }
+
   addRoom() {
     this.navCtrl.push(AddRoomPage);
   }
@@ -61,45 +130,31 @@ export class LockerRoomsPage {
       this.navCtrl.setRoot(LoginPage);
   }
 
-  joinRoom(key, roomName) {
-      console.log('Room Name is -> ' + roomName);
-      
+  joinRoom(key, roomName, room) {
     let user: User;
     this.storage.get('userEmail').then((val) => {
         user = val;
         this.navCtrl.push(ChatPage, {
             key: key,
             roomName: roomName,
-            nickname: user
+            nickname: user,
+            isPrivate: false
         });
     });
   }
-  // public browser = this.iab.create('https://ionicframework.com/');
 
-  
-  ionViewDidLoad() {
-    // ReadyUI.setUrl("http://www.sportsargument.com/cometchat/");
-    // CCCometChat.initializeCometChat("http://www.sportsargument.com/cometchat/", "U7BJC-7VWFL-CF3JE-BFEL4-VT5WT", apiKey, "NO", this.successCallback(response){}, this.failCallback(response){});
-    // this.readyUI.loginWithUsername("John","passw0rd", this.callbackmeth);
-    // this.tb.create('https://ionicframework.com/');
-
-    // this.iab.create('http://sportsargument.com/login/?redirect_to=http://sportsargument.com/redirector');
-    // this.iab.
-    // const browser: ThemeableBrowserObject = this.tb.create('https://ionicframework.com/', '_blank', this.options);
+  joinPrivateRoom(key, roomName, room) {
+    let user: User;
+    this.storage.get('userEmail').then((val) => {
+        user = val;
+        this.navCtrl.push(ChatPage, {
+            key: key,
+            roomName: roomName,
+            nickname: user,
+            isPrivate: true
+        });
+    });
   }
-
-    closeInAppBrowser(event) {
-        if (event.url.match("/close")) {
-
-        }
-}
-
-  successCallback(result){
-            
-    alert(result);
-            
-  }
-
 }
 
 export const snapshotToArray = snapshot => {

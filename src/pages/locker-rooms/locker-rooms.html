@@ -9,10 +9,23 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content>
   <ion-list>
-    <ion-item *ngFor="let room of rooms" (click)="joinRoom(room.key, room.roomname)">
-      {{room.roomname}}
+      <ion-list-header>
+          Private Rooms
+      </ion-list-header>
+      <ion-item *ngFor="let room of privaterooms">
+        <h2 (click)="joinPrivateRoom(room.key, room.roomname, room)">{{room.roomname}}</h2>
+        <button ion-button clear item-end (click)="inviteUser(room.key)">Invite</button>
+      </ion-item>
+    <ion-list-header>
+        Public Rooms
+    </ion-list-header>
+    <ion-item *ngFor="let room of rooms" (click)="joinRoom(room.key, room.roomname, room)">
+      <h2>{{room.roomname}}</h2>
+      <p *ngIf="room.infoUpdate">{{room.infoUpdate.messageCount}} messages</p>
+      <p *ngIf="!room.infoUpdate">0 messages</p>
+      <p *ngIf="room.infoUpdate">Last Updated: {{room.infoUpdate.dateSent | date:'short'}}</p>
       <!-- <ion-icon name="chatboxes" item-end (click)="joinRoom(room.key, room.roomname)"></ion-icon> -->
     </ion-item>
   </ion-list>

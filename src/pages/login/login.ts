@@ -31,14 +31,19 @@ export class LoginPage {
     public facebook: Facebook,
     private adMob: AdMobFree
   ) {
-    this.storage.get('userEmail').then((val) => {
-      if (val) {
-        this.navCtrl.setRoot(LockerRoomsPage);
-      }
-    });
+
+    if (firebase.auth().currentUser) {
+      this.navCtrl.setRoot(LockerRoomsPage);
+    }
     if (AD_MOB_SHOW_ADS) {
       this.showBannerAd();
     }
+  }
+
+  ionViewDidEnter() {
+    if (AD_MOB_SHOW_ADS) {
+			this.adMob.banner.show();
+		}
   }
 
   async showBannerAd() {

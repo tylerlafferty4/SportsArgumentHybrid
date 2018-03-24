@@ -35,19 +35,21 @@ export class MyApp {
       statusBar.styleDefault();
       splashScreen.hide();
       firebase.initializeApp(config);
-      // this.fcm.getToken().then(token => {
-      //   // Your best bet is to here store the token on the user's profile on the
-      //   // Firebase database, so that when you want to send notifications to this 
-      //   // specific user you can do it from Cloud Functions.
-      // });
+      this.fcm.getToken().then(token => {
+        // Your best bet is to here store the token on the user's profile on the
+        // Firebase database, so that when you want to send notifications to this 
+        // specific user you can do it from Cloud Functions.
+      });
 
-      // this.fcm.onNotification().subscribe( data => {
-      //   if(data.wasTapped){
-      //     //Notification was received on device tray and tapped by the user.
-      //   }else{
-      //     //Notification was received in foreground. Maybe the user needs to be notified.
-      //   }
-      // });
+      this.fcm.onNotification().subscribe( data => {
+        if(data.wasTapped){
+          //Notification was received on device tray and tapped by the user.
+          // let jsonData = data.data.roomkey;
+          // alert(jsonData);
+        } else {
+          //Notification was received in foreground. Maybe the user needs to be notified.
+        }
+      });
     });
   }
 }
