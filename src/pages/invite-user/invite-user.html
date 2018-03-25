@@ -18,13 +18,19 @@
   </ion-searchbar>
   <ion-list *ngIf="!searching">
     <ion-item  *ngFor="let user of users" text-wrap>
-      <ion-checkbox (ionChange)="toggleUser(user.key)"></ion-checkbox>
+      <ion-checkbox *ngIf="selectedUsers.indexOf(user.key) > -1;else notSelected" checked="true" (ionChange)="toggleUser(user.key)"></ion-checkbox>
+        <ng-template #notSelected>
+           <ion-checkbox checked="false" (ionChange)="toggleUser(user.key)"></ion-checkbox>
+        </ng-template>
      <ion-label>{{user.displayName}}</ion-label>
     </ion-item>
   </ion-list>
   <ion-list *ngIf="searching">
       <ion-item *ngFor="let user of filteredUsers" text-wrap>
-          <ion-checkbox (ionChange)="toggleUser(user.key)"></ion-checkbox>
+         <ion-checkbox *ngIf="selectedUsers.indexOf(user.key) > -1;else notSelected" checked="true" (ionChange)="toggleUser(user.key)"></ion-checkbox>
+         <ng-template #notSelected>
+           <ion-checkbox checked="false" (ionChange)="toggleUser(user.key)"></ion-checkbox>
+        </ng-template>
          <ion-label>{{user.displayName}}</ion-label>
       </ion-item>
   </ion-list>

@@ -53,8 +53,12 @@ export class LockerRoomsPage {
         firebase.database().ref('privaterooms/'+room.key+'/users').on('value', resp => {
           let privates = snapshotToArray(resp);
           for(let item of privates) {
-            if (item.userEmail === this.user.email) {
-              myPrivate.push(room);
+            if (item.userId === this.user.uid) {
+              if (myPrivate.indexOf(room) > -1) {
+
+              } else {
+                myPrivate.push(room);
+              }
             }
           }
         });

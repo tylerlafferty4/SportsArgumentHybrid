@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { AlertController, NavController, NavParams } from 'ionic-angular';
 import * as firebase from 'firebase';
 import { AD_MOB_SHOW_ADS, AD_MOB_AUTO_SHOW, AD_MOB_ID, AD_MOB_TESTING } from '../../config/ad-mob-config';
 import { snapshotToArray } from '../locker-rooms/locker-rooms';
@@ -25,7 +25,8 @@ export class InviteUserPage {
 
   constructor(
     public navCtrl: NavController,
-    public navParams: NavParams
+    public navParams: NavParams,
+    private alertCtrl: AlertController
   ) {
     this.roomKey = this.navParams.get('roomkey');
     // firebase.database().ref('privateRooms/'+this.roomKey+'/users/').on('value', resp => {
@@ -59,6 +60,23 @@ export class InviteUserPage {
     });
   } 
 
+  isSelected(userKey) {
+    if (this.selectedUsers.indexOf(userKey) > -1) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  isFilteredSelected(userKey) {
+    for(let user of this.filteredUsers) {
+      if (this.selectedUsers.indexOf(userKey) > -1) {
+        return true;
+      }
+      return false;
+    }
+  }
+
   sendInvite() {
     for(let user of this.selectedUsers) {
       console.log('Sending invite for -> ' + user);
@@ -66,6 +84,19 @@ export class InviteUserPage {
       newData.set({
         userId: user
       });
+      let alert = this.alertCtrl.create({
+        title: 'Sports Argument',
+        message: 'Users have been added!',
+        buttons: [
+          {
+            text: 'Ok',
+            handler: () => {
+              this.navCtrl.pop();
+            }
+          }
+        ]
+      });
+      alert.present();
     }
   }
 
