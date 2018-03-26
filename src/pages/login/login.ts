@@ -70,6 +70,8 @@ export class LoginPage {
       if (result) {
         console.log('Result -> ' + JSON.stringify(result));
         if (result.emailVerified) {
+          let fireUser = firebase.auth().currentUser;
+          this.updateUserObject(fireUser);
           this.storage.set('userEmail', user.email);
           this.navCtrl.setRoot(LockerRoomsPage);
         } else {
@@ -103,8 +105,9 @@ export class LoginPage {
         .then( success => { 
           console.log("Firebase success: " + JSON.stringify(success)); 
           // this.storage.set('userEmail', user.email);
-          let display = firebase.auth().currentUser.displayName;
-          if (display === null || display === '') {
+          let user = firebase.auth().currentUser;
+          this.updateUserObject(user);
+          if (user.displayName === null || user.displayName === '') {
             this.presentDisplayPrompt();
           } else {
             this.navCtrl.setRoot(LockerRoomsPage);
@@ -112,6 +115,17 @@ export class LoginPage {
         });
 
     }).catch((error) => { console.log(error) });
+  }
+
+  updateUserObject(user) {
+    let newData = firebase.database().ref('users/'+user.uid).push().key;
+    var dataUser = {
+      displayName: user.displayName,
+      email: user.email
+    };
+    var updates = {};
+    updates[user.uid] = dataUser;
+    firebase.database().ref('users/').update(updates);
   }
  
   register() {

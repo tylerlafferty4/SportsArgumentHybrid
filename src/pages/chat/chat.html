@@ -23,7 +23,7 @@
       </div>
       <ng-template #message>
         <div class="chat-message" text-right *ngIf="chat.user === nickname">
-          <div class="right-bubble">
+          <div class="right-bubble" (click)="tappedMyMessage(chat)">
             <span class="msg-name">Me</span>
             <span class="msg-date">{{chat.sendDate | date:'short'}}</span>
             <p text-wrap>{{chat.message}}</p>

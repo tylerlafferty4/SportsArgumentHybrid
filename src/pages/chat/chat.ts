@@ -237,6 +237,36 @@ export class ChatPage {
     actionSheet.present();
   }
 
+  tappedMyMessage(chat) {
+    let actionSheet = this.actionSheetCtrl.create({
+      title: 'Sports Argument',
+      buttons: [
+        {
+          text: 'Delete Message',
+          handler: () => {
+            this.deleteMessage(chat);
+          }
+        },
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+
+          }
+        }
+      ]
+    });
+    actionSheet.present();
+  }
+  
+  deleteMessage(chat) {
+    if (this.isPrivate) {
+      firebase.database().ref('privaterooms/'+this.roomkey+'/chats/'+chat.key).remove();
+    } else {
+      firebase.database().ref('chatrooms/'+this.roomkey+'/chats/'+chat.key).remove();
+    }
+  }
+
   flagMessage(chat) {
     let newData = this.flaggedMessages.push();
     newData.set({
