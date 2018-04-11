@@ -23,31 +23,44 @@ export class InviteUserPage {
   searchTxt = '';
   searching = false;
 
+  curUser = firebase.auth().currentUser;
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     private alertCtrl: AlertController
   ) {
     this.roomKey = this.navParams.get('roomkey');
-    // firebase.database().ref('privateRooms/'+this.roomKey+'/users/').on('value', resp => {
-    //   this.alreadyInUsers = [];
-    //   this.alreadyInUsers = snapshotToArray(resp);
-    // });
+    firebase.database().ref('privaterooms/'+this.roomKey+'/users/').on('value', resp => {
+      this.alreadyInUsers = [];
+      this.alreadyInUsers = snapshotToArray(resp);
+    });
     firebase.database().ref('users/').on('value', resp => {
       this.users = [];
       this.users = snapshotToArray(resp);
+      // for (let user of this.users) {
+      //   if (user.key === this.curUser.uid) {
+      //     console.log('Found match -> ' + this.curUser.displayName);
+      //     this.users.splice(this.users.indexOf(user.key));
+      //   }
+      // }
     });
   }
 
-  // determineAlreadyIn() {
-  //   for(let user of this.alreadyInUsers) {
-  //     console.log('Determinign for -> ' + user.key);
-  //     let index = this.users.indexOf(user.key);
-  //     if (index > -1) {
-  //       this.users.splice(index);
-  //     }
-  //   }
-  // }
+  determineAlreadyIn() {
+    // console.log('Determining already in');
+    // for(let user of this.alreadyInUsers) {
+    //   console.log('Determining for -> ' + user.key);
+    //   for (let newUser of this.users) {
+    //     console.log('Comparing alreadyUser -> ' + user.key + ' to newUser -> ' + newUser.key);
+    //     if (this.alreadyInUsers.indexOf(newUser) > -1) {
+    //       console.log('FOUND A MATCH');
+          
+    //       this.users.splice(this.users.indexOf(newUser));
+    //     }
+    //   }
+    // }
+  }
   onInput() {
     if (this.searchTxt === '') {
       this.searching = false;
@@ -79,32 +92,34 @@ export class InviteUserPage {
 
   sendInvite() {
     for(let user of this.selectedUsers) {
-      console.log('Sending invite for -> ' + user);
-      let newData = firebase.database().ref('privaterooms/'+this.roomKey+'/users').push();
-      newData.set({
-        userId: user
-      });
-      let alert = this.alertCtrl.create({
-        title: 'Sports Argument',
-        message: 'Users have been added!',
-        buttons: [
-          {
-            text: 'Ok',
-            handler: () => {
-              this.navCtrl.pop();
-            }
-          }
-        ]
-      });
-      alert.present();
+      var dataUser = {
+        displayName: user.displayName,
+        email: user.email
+      };
+      var updates = {};
+      updates[user.key] = dataUser;
+      firebase.database().ref('privaterooms/'+this.roomKey+'/users/').update(updates);
     }
+    let alert = this.alertCtrl.create({
+      title: 'Sports Argument',
+      message: 'Users have been added!',
+      buttons: [
+        {
+          text: 'Ok',
+          handler: () => {
+            this.navCtrl.pop();
+          }
+        }
+      ]
+    });
+    alert.present();
   }
 
-  toggleUser(userKey) {
-    if (this.selectedUsers.indexOf(userKey) > -1) {
-      this.selectedUsers.splice(this.selectedUsers.indexOf(userKey));
+  toggleUser(user) {
+    if (this.selectedUsers.indexOf(user) > -1) {
+      this.selectedUsers.splice(this.selectedUsers.indexOf(user));
     } else {
-      this.selectedUsers.push(userKey);
+      this.selectedUsers.push(user);
     }
   }
 }

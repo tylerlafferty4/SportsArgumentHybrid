@@ -33,6 +33,7 @@ export class LoginPage {
   ) {
 
     if (firebase.auth().currentUser) {
+      this.updateUserObject(firebase.auth().currentUser);
       this.navCtrl.setRoot(LockerRoomsPage);
     }
     if (AD_MOB_SHOW_ADS) {
@@ -118,7 +119,6 @@ export class LoginPage {
   }
 
   updateUserObject(user) {
-    let newData = firebase.database().ref('users/'+user.uid).push().key;
     var dataUser = {
       displayName: user.displayName,
       email: user.email

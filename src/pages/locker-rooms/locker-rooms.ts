@@ -124,6 +124,28 @@ export class LockerRoomsPage {
     });
   }
 
+  removePrivate(room) {
+    let alert = this.alertCtrl.create({
+      title: 'Sports Argument',
+      message: 'Are you sure you want to delete ' + room.roomname + '?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+
+          }
+        },{
+          text: 'Delete',
+          handler: () => {
+            firebase.database().ref('privaterooms/'+room.key).remove();
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+
   addRoom() {
     this.navCtrl.push(AddRoomPage);
   }
