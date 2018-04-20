@@ -49,7 +49,7 @@ export class AddRoomPage {
         newData.set({
           private: true,
           roomname: this.data.roomname,
-          owner: this.user.email
+          owner: this.user.uid
         });
       } else {
         let newData = this.ref.push();

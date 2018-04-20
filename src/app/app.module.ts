@@ -37,6 +37,7 @@ import { Facebook } from '@ionic-native/facebook';
 import { config } from '../config/config';
 
 import { AdMobFree } from '@ionic-native/admob-free';
+// import { SoundCloudProvider } from '../providers/sound-cloud/sound-cloud';
 
 @NgModule({
   declarations: [
@@ -89,7 +90,8 @@ import { AdMobFree } from '@ionic-native/admob-free';
     Facebook,
     FCM,
     HTTP,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+   // SoundCloudProvider
   ]
 })
 export class AppModule {}

@@ -16,7 +16,7 @@
       </ion-list-header>
       <ion-item *ngFor="let room of privaterooms">
         <h2 (click)="joinPrivateRoom(room.key, room.roomname, room)">{{room.roomname}}</h2>
-        <button *ngIf="room.owner==user.email" ion-button clear item-end (click)="removePrivate(room)">Remove</button>
+        <button *ngIf="room.owner==user.uid" ion-button clear item-end (click)="removePrivate(room)">Remove</button>
         <button ion-button clear item-end (click)="inviteUser(room.key)">Invite</button>
       </ion-item>
     <ion-list-header>

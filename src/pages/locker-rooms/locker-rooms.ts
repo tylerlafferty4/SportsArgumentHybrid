@@ -47,13 +47,13 @@ export class LockerRoomsPage {
   determinePrivateRooms() {
     let myPrivate = [];
     for(let room of this.privaterooms) {
-      if (room.owner === this.user.email) {
+      if (room.owner === this.user.uid) {
         myPrivate.push(room);
       } else {// if (room.users.indexOf(this.user.email) > -1) {
         firebase.database().ref('privaterooms/'+room.key+'/users').on('value', resp => {
           let privates = snapshotToArray(resp);
           for(let item of privates) {
-            if (item.userId === this.user.uid) {
+            if (item.key === this.user.uid) {
               if (myPrivate.indexOf(room) > -1) {
 
               } else {
