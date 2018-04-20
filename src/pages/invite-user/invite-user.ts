@@ -92,10 +92,17 @@ export class InviteUserPage {
 
   sendInvite() {
     for(let user of this.selectedUsers) {
-      var dataUser = {
-        displayName: user.displayName,
-        email: user.email
-      };
+      var dataUser: any;
+      if (user.email && user.email !== '') {
+        dataUser = {
+          displayName: user.displayName,
+          email: user.email
+        };
+      } else {
+        dataUser = {
+          displayName: user.displayName
+        };
+      }
       var updates = {};
       updates[user.key] = dataUser;
       firebase.database().ref('privaterooms/'+this.roomKey+'/users/').update(updates);
