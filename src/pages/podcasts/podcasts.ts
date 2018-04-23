@@ -36,43 +36,35 @@ export class PodcastsPage {
             this.showBannerAd();
         }
         
-        this.storage.get(this.videosId).then((val) => {
-            this.storage.get(this.dateUpdate).then((dateVal) => {
-                // if (dateVal) {
-                //     var dateNow = new Date();
-                //     var diff = Math.abs(dateVal.getTime() - dateNow.getTime());
-                //     var diffDays = Math.ceil(diff / (1000 * 3600 * 24)); 
-                //     if (diffDays > 7) {
-                //         val = null;
-                //     }
-                // }
-                if (val == null) {
-                    console.log('Getting videos');
-                    // let toast = this.toastCtrl.create({
-                    //     message: 'Getting Videos',
-                    //     duration: 3000,
-                    //     position: 'top'
-                    //   });
-                    //   toast.present();
-                    this.http.get(url).map(res => res.json()).subscribe(data => {
-                        this.posts = this.posts.concat(data.items);
-                        this.storage.set(this.videosId, this.posts);
-                        let date1 = new Date();
-                        this.storage.set(this.dateUpdate, date1);
-                    });
-                } else {
-                    console.log('Have videos');
-                    // let toast = this.toastCtrl.create({
-                    //     message: 'Already have Videos',
-                    //     duration: 3000,
-                    //     position: 'top'
-                    //   });
-                    // toast.present();
-                    
-                    this.posts = val
-                }
-            });
-        });
+        // this.storage.get(this.videosId).then((val) => {
+        //     this.storage.get(this.dateUpdate).then((dateVal) => {
+        //         // if (dateVal) {
+        //         //     var dateNow = new Date();
+        //         //     var diff = Math.abs(dateVal.getTime() - dateNow.getTime());
+        //         //     var diffDays = Math.ceil(diff / (1000 * 3600 * 24)); 
+        //         //     if (diffDays > 7) {
+        //         //         val = null;
+        //         //     }
+        //         // }
+        //         if (val == null) {
+        //             console.log('Getting videos');
+        //             // let toast = this.toastCtrl.create({
+        //             //     message: 'Getting Videos',
+        //             //     duration: 3000,
+        //             //     position: 'top'
+        //             //   });
+        //             //   toast.present();
+        //             this.http.get(url).map(res => res.json()).subscribe(data => {
+        //                 this.posts = this.posts.concat(data.items);
+        //                 this.storage.set(this.videosId, this.posts);
+        //                 let date1 = new Date();
+        //                 this.storage.set(this.dateUpdate, date1);
+        //             });
+        //         } else {
+        //             this.posts = val
+        //         }
+        //     });
+        // });
     }
 
 
