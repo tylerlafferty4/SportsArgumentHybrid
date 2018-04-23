@@ -7,7 +7,8 @@
 </ion-header>
 
 <ion-content class="bg-style">
-        <ion-refresher (ionRefresh)="doRefresh($event)">
+    <iframe width="100%" height=100% src="http://sportsargument.com/podcasts/" frameborder="0"></iframe>
+        <!-- <ion-refresher (ionRefresh)="doRefresh($event)">
                 <ion-refresher-content
                 pullingIcon="arrow-dropdown"
                 pullingText="Pull to refresh"
@@ -20,8 +21,9 @@
             {{item.snippet.title}}
         </ion-card-header>
         <ion-card-content no-padding>
-            <!-- <img [src]="item.snippet.thumbnails.high.url"/> -->
-            <iframe width="100%" height="315" [src]="item.id.videoId | youtube" frameborder="0" allow="encrypted-media" allowfullscreen></iframe>
+            <img [src]="item.snippet.thumbnails.high.url"/>
+            <iframe width="100%" height="315" [src]="item.id.videoId | youtube"></iframe>
+            
         </ion-card-content>
-    </ion-card>
+    </ion-card> -->
 </ion-content>

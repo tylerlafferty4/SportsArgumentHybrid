@@ -77,7 +77,9 @@ export class PodcastsPage {
 
 
     ionViewDidEnter() {
-        this.adMob.banner.show();
+        if (AD_MOB_SHOW_ADS) {
+            this.adMob.banner.show();
+        }
     }
 
     doRefresh(refresher) {
