@@ -1,0 +1,44 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Photo Wall</ion-title>
+    <ion-buttons end>
+      <button ion-button text-only (click)="capture()">
+        Upload
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+  <ion-card *ngFor="let photo of photos">
+    <ion-item>
+        <!-- <ion-avatar item-start>
+          <img src="img/marty-avatar.png">
+        </ion-avatar> -->
+        <h4 class="author">{{photo.author}}</h4>
+      </ion-item>
+      <img class="img" [src]="photo.img" />
+      <p class="time">{{photo.time}}</p>
+      <ion-row no-padding>
+          <ion-col>
+            <button ion-button icon-start clear small (click)="likePhoto(photo)">
+              <ion-icon name="thumbs-up"></ion-icon>
+              {{photo.likes}}
+            </button>
+          </ion-col>
+          <ion-col text-center>
+            <button ion-button icon-start clear small (click)="commentPhoto(photo)">
+              <ion-icon name="text"></ion-icon>
+              {{photo.commentCount}}
+            </button>
+          </ion-col>
+          <ion-col text-right>
+              <button ion-button icon-start clear small (click)="sharePhoto(photo)">
+                <ion-icon name="share-alt"></ion-icon>
+                Share
+              </button>
+          </ion-col>
+        </ion-row>
+  </ion-card>
+</ion-content>

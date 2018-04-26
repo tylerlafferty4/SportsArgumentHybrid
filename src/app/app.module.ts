@@ -18,6 +18,7 @@ import { PostDetail } from '../pages/post-detail/post-detail';
 import { AddRoomPage } from '../pages/add-room/add-room';
 import { ChatPage } from '../pages/chat/chat';
 import { InviteUserPage } from '../pages/invite-user/invite-user';
+import { PhotoWallPage } from '../pages/photo-wall/photo-wall';
 
 import { AuthenticationService } from '../services/authentication/authentication.service';
 import { WordPressService } from '../services/word-press/word-press.service';
@@ -37,6 +38,10 @@ import { Facebook } from '@ionic-native/facebook';
 import { config } from '../config/config';
 
 import { AdMobFree } from '@ionic-native/admob-free';
+
+import { Camera } from '@ionic-native/camera';
+import { SocialSharing } from '@ionic-native/social-sharing';
+import { PhotoUploadPage } from '../pages/photo-upload/photo-upload';
 // import { SoundCloudProvider } from '../providers/sound-cloud/sound-cloud';
 
 @NgModule({
@@ -52,7 +57,9 @@ import { AdMobFree } from '@ionic-native/admob-free';
     RegisterPage,
     ChatPage,
     AddRoomPage,
-    InviteUserPage
+    InviteUserPage,
+    PhotoWallPage,
+    PhotoUploadPage
   ],
   imports: [
     BrowserModule,
@@ -76,7 +83,9 @@ import { AdMobFree } from '@ionic-native/admob-free';
     RegisterPage,
     AddRoomPage,
     ChatPage,
-    InviteUserPage
+    InviteUserPage,
+    PhotoWallPage,
+    PhotoUploadPage
   ],
   providers: [
     StatusBar,
@@ -90,6 +99,8 @@ import { AdMobFree } from '@ionic-native/admob-free';
     Facebook,
     FCM,
     HTTP,
+    Camera,
+    SocialSharing,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
    // SoundCloudProvider
   ]

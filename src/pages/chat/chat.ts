@@ -21,6 +21,7 @@ export class ChatPage {
   roomName: string;
   nickname: string;
   isPrivate: boolean;
+  isEditing = false;
   offStatus: boolean = false;
 
   user = firebase.auth().currentUser;
@@ -241,6 +242,12 @@ export class ChatPage {
     let actionSheet = this.actionSheetCtrl.create({
       title: 'Sports Argument',
       buttons: [
+        // {
+        //   text: 'Edit Message',
+        //   handler: () => {
+        //     this.editMessage(chat);
+        //   }
+        // },
         {
           text: 'Delete Message',
           handler: () => {
@@ -267,6 +274,11 @@ export class ChatPage {
     }
   }
 
+  editMessage(chat) {
+    this.isEditing = true;
+    this.data.message = chat.message;
+  }
+ 
   flagMessage(chat) {
     let newData = this.flaggedMessages.push();
     newData.set({
