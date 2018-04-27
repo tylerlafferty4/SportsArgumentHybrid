@@ -1,0 +1,51 @@
+page-photo-comment {
+    ion-content {
+        background: url(../assets/imgs/chat-back.png) no-repeat center center fixed;
+        background-size: cover;
+        height: 100%;
+        overflow: hidden;
+        .item-md, .item-ios {
+          background: none;
+        }
+    }
+    ion-footer {
+        background: white;
+        ion-icon {
+            padding: 10px;
+            font-size: 20px;
+            color: green;
+        }
+    }
+      
+      .chat-message {
+        width: 80%;
+        min-height: 40px;
+        .right-bubble {
+            position: relative;
+            padding: 0px 0px 0px;
+            left: 15%;
+            span.msg-name {
+                font-size: 12px;
+                font-weight: bold;
+                color: green;
+            }
+            span.msg-date {
+                font-size: 10px;
+            }
+        }
+
+        .left-bubble {
+            position: relative;
+            padding: 0px 0px 0px;
+            left: 5%;
+            span.msg-name {
+                font-size: 12px;
+                font-weight: bold;
+                color: blue;
+            }
+            span.msg-date {
+                font-size: 10px;
+            }
+        }
+    }
+}

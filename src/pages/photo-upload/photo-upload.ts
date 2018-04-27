@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AlertController, LoadingController, NavController, NavParams } from 'ionic-angular';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import * as firebase from 'firebase';
+import moment from 'moment';
 
 @Component({
   selector: 'page-photo-upload',
@@ -12,6 +13,7 @@ export class PhotoUploadPage {
   captureDataUrl: string;
   photoref = firebase.database().ref('photos/');
   user = firebase.auth().currentUser;
+  uploading = false;
 
   constructor(
     public navCtrl: NavController,
@@ -45,6 +47,7 @@ export class PhotoUploadPage {
   }
 
   upload() {
+    this.uploading = true;
     let loading = this.loadingCtrl.create({
       content: 'Upload photo'
     });
@@ -63,13 +66,14 @@ export class PhotoUploadPage {
   }
 
   uploadToDatabase(snapshot) {
+    let sendDate = moment(Date()).format('M/D/YYYY, h:mm:ss a z');
     firebase.database().ref('photos/').push({
       img: snapshot.downloadURL,
       authorUID: this.user.uid,
       author: this.user.displayName,
       likes: 0,
       commentCount: 0,
-      uploadDate: Date()
+      uploadDate: sendDate
     });
     
     let alert = this.alertCtrl.create({
@@ -80,6 +84,7 @@ export class PhotoUploadPage {
           text: 'Ok',
           role: 'cancel',
           handler: data => {
+            this.uploading = false;
             this.navCtrl.pop();
           }
         }

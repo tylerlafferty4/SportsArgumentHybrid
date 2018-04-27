@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import moment from 'moment';
-import { AlertController, NavController } from 'ionic-angular';
+import { ActionSheetController, AlertController, NavController, ToastController } from 'ionic-angular';
 import * as firebase from 'firebase';
 import { SocialSharing } from '@ionic-native/social-sharing';
 import { PhotoUploadPage } from '../photo-upload/photo-upload';
+import { PhotoCommentPage } from '../photo-comment/photo-comment';
 
 @Component({
   selector: 'page-photo-wall',
@@ -18,42 +19,91 @@ export class PhotoWallPage {
   constructor(
     public navCtrl: NavController,
     private socialSharing: SocialSharing,
-    private alertCtrl: AlertController
+    private alertCtrl: AlertController,
+    private toastCtrl: ToastController,
+    private actionSheetCtrl: ActionSheetController
   ) {
+
+  }
+
+  ionViewDidEnter() {
+    this.user = firebase.auth().currentUser;
     this.getPhotos();
   }
 
-  getPhotos() {
-    this.photoref.on('value', resp => {
+  getPhotos(refresher?) {
+    this.photoref.once('value', resp => {
       this.photos = [];
       this.photos = snapshotToArray(resp);
       this.photos.reverse();
       this.getTimeDifference();
+      if (refresher) {
+        refresher.complete();
+      }
+    }).catch(() => {
+      let toast = this.toastCtrl.create({
+        message: 'An error occurred getting new photos.',
+        position: 'bottom',
+        duration: 3000
+      })
+      toast.present();
+      if (refresher) {
+        refresher.complete();
+      }
     });
+  }
+
+  doRefresh(refresher) {
+    this.getPhotos(refresher);
+  }
+
+  tappedPhotoOptions(photo) {
+    let alert = this.actionSheetCtrl.create({
+      title: 'Sports Argument',
+      buttons: [
+        {
+          text: 'Flag Photo',
+          handler: () => {
+            this.flagPhoto(photo);
+          }
+        }, {
+          text: 'Cancel',
+          role: 'cancel'
+        }
+      ]
+    });
+    alert.present();
+  }
+
+  flagPhoto(photo) {
+    let sendDate = moment(Date()).format('M/D/YYYY, h:mm:ss a z');
+    firebase.database().ref('flaggedPhotos/').push({
+      photokey: photo.key,
+      user: photo.author,
+      userId: photo.authorUID,
+      uploadDate: photo.uploadDate,
+      flaggedDate: sendDate
+    });
+    this.showFlagConfirm();
+  }
+
+  showFlagConfirm() {
+    let alert = this.alertCtrl.create({
+      title: 'Sports Argument',
+      message: 'Your request has been received. We will review and take action within 24 hours.',
+      buttons: [
+        {
+          text: 'Ok',
+          role: 'cancel'
+        }
+      ]
+    });
+    alert.present();
   }
 
   getTimeDifference() {
     for (let photo of this.photos) {
-      // var diff = Math.abs(Date.now() - new Date(photo.uploadDate).getTime());
-      // var diffDays = diff / (1000 * 3600 * 24); 
-      // var time = Date.now() - new Date(photo.uploadDate).getTime();
-      const now = moment();
-      const upload = moment(photo.uploadDate);
-      const hours = now.diff(upload, 'hours');
-      if (hours > 23) {
-        const days = now.diff(upload, 'days');
-        if (days === 1) {
-          photo.time = days + ' day ago';
-        } else {
-          photo.time = days + ' days ago';
-        }
-      } else {
-        if (hours === 1) {
-          photo.time = hours + ' hour ago';
-        } else {
-          photo.time = hours + ' hours ago';
-        }
-      }
+      photo.time = moment(photo.uploadDate).fromNow();
     }
   }
 
@@ -62,26 +112,39 @@ export class PhotoWallPage {
   }
 
   likePhoto(photo) {
-    if (this.checkUserLiked(photo)) {
-      console.log('Already liked');
-    } else {
-      var data = {
-        img: photo.img,
-        authorUID: photo.authorUID,
-        author: photo.author,
-        likes: photo.likes+1,
-      }
-      var updates = {};
-      updates[photo.key] = data;
-      this.photoref.update(updates);
+    if (firebase.auth().currentUser) {
+      if (this.checkUserLiked(photo)) {
+        console.log('Already liked');
+      } else {
+        var data = {
+          img: photo.img,
+          authorUID: photo.authorUID,
+          author: photo.author,
+          likes: photo.likes+1,
+          comments: photo.comments,
+          uploadDate: photo.uploadDate,
+          commentCount: photo.commentCount
+        }
+        var updates = {};
+        updates[photo.key] = data;
+        this.photoref.update(updates);
 
-      var dataUser = {
-        userId: this.user.uid,
-        displayName: this.user.displayName
-      };
-      var usersLiked = {};
-      usersLiked[this.user.uid] = dataUser;
-      firebase.database().ref('photos/'+photo.key+'/usersLiked/').update(usersLiked);
+        var dataUser = {
+          userId: this.user.uid,
+          displayName: this.user.displayName
+        };
+        var usersLiked = {};
+        usersLiked[this.user.uid] = dataUser;
+        firebase.database().ref('photos/'+photo.key+'/usersLiked/').update(usersLiked);
+        photo.likes = photo.likes+1;
+      }
+    } else {
+      let alert = this.alertCtrl.create({
+        title: 'Sports Argument',
+        message: 'You must be logged in to like a photo. Please go to the Locker Rooms page to login.',
+        buttons: [{ text: 'Ok' }]
+      });
+      alert.present();
     }
   }
 
@@ -101,7 +164,18 @@ export class PhotoWallPage {
   }
 
   commentPhoto(photo) {
-
+    if (firebase.auth().currentUser) {
+      this.navCtrl.push(PhotoCommentPage, {
+        photo: photo
+      });
+    } else {
+      let alert = this.alertCtrl.create({
+        title: 'Sports Argument',
+        message: 'You must be logged in to view comments. Please go to the Locker Rooms page to login.',
+        buttons: [{ text: 'Ok' }]
+      });
+      alert.present();
+    }
   }
 
   sharePhoto(photo) {

@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { Platform } from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import { Platform, Nav } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { FCM } from '@ionic-native/fcm';
@@ -22,6 +22,7 @@ const config = {
 })
 export class MyApp {
   rootPage:any = TabsPage;
+  @ViewChild(Nav) navChild: Nav;
 
   constructor(
     platform: Platform, 
@@ -35,6 +36,7 @@ export class MyApp {
       statusBar.styleDefault();
       splashScreen.hide();
       firebase.initializeApp(config);
+
       this.fcm.getToken().then(token => {
         // Your best bet is to here store the token on the user's profile on the
         // Firebase database, so that when you want to send notifications to this 

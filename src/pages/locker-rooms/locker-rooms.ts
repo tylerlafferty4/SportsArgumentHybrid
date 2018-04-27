@@ -3,6 +3,7 @@ import { AlertController, NavController } from 'ionic-angular';
 import { AddRoomPage } from '../add-room/add-room';
 import { ChatPage } from '../chat/chat';
 import * as firebase from 'firebase';
+import moment from 'moment';
 import { Storage } from '@ionic/storage';
 import { User, LoginPage } from '../login/login';
 import { AdMobFree, AdMobFreeBannerConfig } from '@ionic-native/admob-free';
@@ -33,6 +34,7 @@ export class LockerRoomsPage {
         this.rooms = [];
         this.rooms = snapshotToArray(resp);
         this.determineRoomSort();
+        this.getTimeDifference();
     });
     this.privateref.on('value', resp => {
       this.privaterooms = [];
@@ -42,6 +44,10 @@ export class LockerRoomsPage {
     if (AD_MOB_SHOW_ADS) {
       this.showBannerAd();
     }
+  }
+
+  getTimeDifference() {
+    
   }
 
   determinePrivateRooms() {
@@ -85,6 +91,9 @@ export class LockerRoomsPage {
     tempRooms.sort(function(a,b) { 
       return new Date(b.infoUpdate.dateSent).getTime() - new Date(a.infoUpdate.dateSent).getTime();
     });
+    for (let room of tempRooms) {
+      room.lastUpdate = moment(room.infoUpdate.dateSent).fromNow();
+    }
   
     this.rooms = tempRooms;
     if (noDataRooms.length > 0) {

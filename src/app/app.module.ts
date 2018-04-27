@@ -1,6 +1,6 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
+import { IonicApp, IonicModule, IonicErrorHandler, NavController } from 'ionic-angular';
 import { MyApp } from './app.component';
 import { HTTP } from '@ionic-native/http';
 
@@ -42,6 +42,7 @@ import { AdMobFree } from '@ionic-native/admob-free';
 import { Camera } from '@ionic-native/camera';
 import { SocialSharing } from '@ionic-native/social-sharing';
 import { PhotoUploadPage } from '../pages/photo-upload/photo-upload';
+import { PhotoCommentPage } from '../pages/photo-comment/photo-comment';
 // import { SoundCloudProvider } from '../providers/sound-cloud/sound-cloud';
 
 @NgModule({
@@ -59,7 +60,8 @@ import { PhotoUploadPage } from '../pages/photo-upload/photo-upload';
     AddRoomPage,
     InviteUserPage,
     PhotoWallPage,
-    PhotoUploadPage
+    PhotoUploadPage,
+    PhotoCommentPage
   ],
   imports: [
     BrowserModule,
@@ -85,7 +87,8 @@ import { PhotoUploadPage } from '../pages/photo-upload/photo-upload';
     ChatPage,
     InviteUserPage,
     PhotoWallPage,
-    PhotoUploadPage
+    PhotoUploadPage,
+    PhotoCommentPage
   ],
   providers: [
     StatusBar,

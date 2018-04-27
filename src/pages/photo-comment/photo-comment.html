@@ -1,0 +1,45 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Comment</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+      <ion-item *ngFor="let comment of comments">
+        <div class="chat-status" text-center *ngIf="comment.type==='join'||comment.type==='exit';else message">
+          <span class="chat-date">{{comment.time}}</span>
+          <span class="chat-content-center">{{comment.message}}</span>
+        </div>
+        <ng-template #message>
+          <div class="chat-message" text-right *ngIf="comment.user === this.user.displayName">
+            <div class="right-bubble" (click)="tappedMyComment(comment)">
+              <span class="msg-name">Me</span>
+              <span class="msg-date">{{comment.time}}</span>
+              <p text-wrap>{{comment.message}}</p>
+            </div>
+          </div>
+          <div class="chat-message" text-left *ngIf="comment.user !== this.user.displayName">
+            <div class="left-bubble" (click)="tappedComment(comment)">
+              <span class="msg-name">{{comment.user}}</span>
+              <span class="msg-date">{{comment.time}}</span>
+              <p text-wrap>{{comment.message}}</p>
+            </div>
+          </div>
+        </ng-template>
+      </ion-item>
+    </ion-list>
+</ion-content>
+
+<ion-footer>
+    <ion-grid>
+      <ion-row>
+        <ion-col col-10>
+          <ion-input autocomplete="on" autocorrect="on" type="text" placeholder="Type a comment" [(ngModel)]="message" name="message"></ion-input>
+        </ion-col>
+        <ion-col col-2 (click)="sendComment()">
+          <ion-icon name="paper-plane"></ion-icon>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+</ion-footer>

@@ -30,7 +30,7 @@ export class PodcastsPage {
         private youtube: YoutubeVideoPlayer,
         private adMob: AdMobFree
     ) {
-        let url = 'https://www.googleapis.com/youtube/v3/search?part=id,snippet&channelId=' + this.channelID + '&q=' + this.searchQuery + '&type=video&order=date&maxResults=' + this.maxResults + '&key=' + this.googleToken;
+        // let url = 'https://www.googleapis.com/youtube/v3/search?part=id,snippet&channelId=' + this.channelID + '&q=' + this.searchQuery + '&type=video&order=date&maxResults=' + this.maxResults + '&key=' + this.googleToken;
   
         if (AD_MOB_SHOW_ADS) {
             this.showBannerAd();

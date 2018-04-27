@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
+import { NavParams, Tabs } from 'ionic-angular';
 import { TwitterPage } from '../twitter/twitter';
 import { HomePage } from '../home/home';
 import { LoginPage } from '../login/login';
@@ -16,7 +17,7 @@ export class TabsPage {
   tab4Root = TwitterPage;
   tab5Root = PodcastsPage;
 
-  constructor() {
+  constructor(private navParams: NavParams) {
 
   }
 }

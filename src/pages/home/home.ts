@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { LoadingController, NavController } from 'ionic-angular';
+import { LoadingController, NavController, NavParams } from 'ionic-angular';
 import { PostDetail } from '../post-detail/post-detail';
 import { WordPressService } from '../../services/word-press/word-press.service';
 import { AdMobFree, AdMobFreeBannerConfig } from '@ionic-native/admob-free';
@@ -17,6 +17,7 @@ export class HomePage {
 
 	constructor( 
 		public navCtrl: NavController,
+		private navParams: NavParams,
 		private wordPressService: WordPressService,
 		public loadingCtrl: LoadingController,
 		private adMob: AdMobFree
@@ -24,7 +25,7 @@ export class HomePage {
 		this.getItems();
 		if (AD_MOB_SHOW_ADS) {
       this.showBannerAd();
-    }
+		}
 	}
 
 

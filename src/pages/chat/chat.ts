@@ -4,6 +4,7 @@ import * as firebase from 'firebase'
 import { FCM } from '@ionic-native/fcm';
 import { Http, Headers } from '@angular/http';
 import 'rxjs/add/operator/map'
+import moment from 'moment';
 import { AdMobFree, AdMobFreeBannerConfig } from '@ionic-native/admob-free';
 import { AD_MOB_SHOW_ADS, AD_MOB_AUTO_SHOW, AD_MOB_ID, AD_MOB_TESTING } from '../../config/ad-mob-config';
 
@@ -57,6 +58,7 @@ export class ChatPage {
       firebase.database().ref('privaterooms/'+this.roomkey+'/chats').on('value', resp => {
         this.chats = [];
         this.chats = snapshotToArray(resp);
+        this.getTimeDifference();
         setTimeout(() => {
           if(this.offStatus === false) {
             this.content.scrollToBottom(300);
@@ -67,6 +69,7 @@ export class ChatPage {
       firebase.database().ref('chatrooms/'+this.roomkey+'/chats').on('value', resp => {
         this.chats = [];
         this.chats = snapshotToArray(resp);
+        this.getTimeDifference();
         setTimeout(() => {
           if(this.offStatus === false) {
             this.content.scrollToBottom(300);
@@ -82,6 +85,37 @@ export class ChatPage {
     }
   }
 
+  getTimeDifference() {
+    for (let chat of this.chats) {
+      chat.time = moment(chat.sendDate).fromNow();
+      // const now = moment();
+      // const upload = moment(chat.sendDate);
+      // const hours = now.diff(upload, 'hours');
+      // const minutes = now.diff(upload, 'minutes');
+      // if (hours > 23) {
+      //   const days = now.diff(upload, 'days');
+      //   if (days === 1) {
+      //     chat.time = days + ' day ago';
+      //   } else {
+      //     chat.time = days + ' days ago';
+      //   }
+      // } else if (minutes > 60) {
+      //   if (hours === 1) {
+      //     chat.time = hours + ' hour ago';
+      //   } else {
+      //     chat.time = hours + ' hours ago';
+      //   }
+      // } else {
+      //   if (minutes === 1) {
+      //     chat.time = minutes + ' minute ago';
+      //   } else if (minutes < 1) {
+      //     chat.time = 'a few seconds ago';
+      //   } else {
+      //     chat.time = minutes + ' minutes ago';
+      //   }
+      // }
+    }
+  }
 
   ionViewDidEnter() {
     if (AD_MOB_SHOW_ADS) {
@@ -156,12 +190,14 @@ export class ChatPage {
       } else {
         newData = firebase.database().ref('chatrooms/'+this.roomkey+'/chats').push();
       }
+      let sendDate = moment(Date()).format('M/D/YYYY, h:mm:ss a z');
       newData.set({
         type: this.data.type,
-        user: this.data.nickname,
+        user: this.user.displayName,
+        userId: this.user.uid,
         email: this.user.email,
         message: this.data.message,
-        sendDate: Date()
+        sendDate: sendDate
       });
       if (!this.isPrivate) {
         this.updateMessageCount();
@@ -173,10 +209,11 @@ export class ChatPage {
   }
 
   updateMessageCount() {
+    let sendDate = moment(Date()).format('M/D/YYYY, h:mm:ss a z');
     let newData = firebase.database().ref('chatrooms/'+this.roomkey).push().key;
     var dataCount = {
       messageCount: this.chats.length,
-      dateSent: Date()
+      dateSent: sendDate
     };
     var updates = {};
     updates['infoUpdate'] = dataCount;
@@ -194,7 +231,8 @@ export class ChatPage {
       priority: 'high',
       notification: {
         body: 'There is a new message in '+this.roomName,
-        title: 'New Message'
+        title: 'New Message',
+        badge: '1'
       },
       data: {
         roomkey: this.roomkey
@@ -280,6 +318,7 @@ export class ChatPage {
   }
  
   flagMessage(chat) {
+    let sendDate = moment(Date()).format('M/D/YYYY, h:mm:ss a z');
     let newData = this.flaggedMessages.push();
     newData.set({
       roomkey: this.roomkey,
@@ -287,24 +326,25 @@ export class ChatPage {
       messageUser: chat.user,
       message: chat.message,
       dateSent: chat.sendDate,
-      flaggedDate: Date()
+      flaggedDate: sendDate
     });
     this.showFlagConfirm();
   }
 
   flagUser(chat) {
+    let sendDate = moment(Date()).format('M/D/YYYY, h:mm:ss a z');
     if (chat.email) {
       let newData = this.flaggedUsers.push();
         newData.set({
           user: chat.user,
           email: chat.email,
-          flaggedDate: Date()
+          flaggedDate: sendDate
         });
     } else {
       let newData = this.flaggedUsers.push();
       newData.set({
         user: chat.user,
-        flaggedDate: Date()
+        flaggedDate: sendDate
       });
     }
     this.showFlagConfirm();

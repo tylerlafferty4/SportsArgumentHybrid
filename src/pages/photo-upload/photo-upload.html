@@ -7,7 +7,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>photo-upload</ion-title>
+    <ion-title>Photo Upload</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -15,8 +15,8 @@
 
 <ion-content padding>
     <div style="display:flex; flex-direction:column;justify-content:center">
-        <button ion-button (click)="capture()">Lets take a picture!</button>
+        <button ion-button (click)="capture()">Select a Picture</button>
         <img [src]="captureDataUrl" *ngIf="captureDataUrl"/>
-        <button ion-button (click)="upload()" *ngIf="captureDataUrl">Upload to Firebase!</button>
+        <button [disabled]="uploading" ion-button (click)="upload()" *ngIf="captureDataUrl">Upload</button>
     </div>
 </ion-content>
