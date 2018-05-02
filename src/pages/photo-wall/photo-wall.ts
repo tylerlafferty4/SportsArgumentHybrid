@@ -12,6 +12,7 @@ import { PhotoCommentPage } from '../photo-comment/photo-comment';
 })
 export class PhotoWallPage {
 
+  gotPhotos = false;
   user = firebase.auth().currentUser;
   photos = [];
   photoref = firebase.database().ref('photos/');
@@ -27,33 +28,43 @@ export class PhotoWallPage {
   }
 
   ionViewDidEnter() {
+    if (!this.user && firebase.auth().currentUser) {
+      this.gotPhotos = false;
+    } 
     this.user = firebase.auth().currentUser;
     this.getPhotos();
   }
 
   getPhotos(refresher?) {
-    this.photoref.once('value', resp => {
-      this.photos = [];
-      this.photos = snapshotToArray(resp);
-      this.photos.reverse();
-      this.getTimeDifference();
-      if (refresher) {
-        refresher.complete();
-      }
-    }).catch(() => {
-      let toast = this.toastCtrl.create({
-        message: 'An error occurred getting new photos.',
-        position: 'bottom',
-        duration: 3000
-      })
-      toast.present();
-      if (refresher) {
-        refresher.complete();
-      }
-    });
+    if (!this.gotPhotos) {
+      this.photoref.once('value', resp => {
+        this.photos = [];
+        this.photos = snapshotToArray(resp);
+        this.photos.reverse();
+        this.getTimeDifference();
+        if (firebase.auth().currentUser) {
+          this.getUserLiked();
+        }
+        this.gotPhotos = true;
+        if (refresher) {
+          refresher.complete();
+        }
+      }).catch(() => {
+        let toast = this.toastCtrl.create({
+          message: 'An error occurred getting new photos.',
+          position: 'bottom',
+          duration: 3000
+        })
+        toast.present();
+        if (refresher) {
+          refresher.complete();
+        }
+      });
+    }
   }
 
   doRefresh(refresher) {
+    this.gotPhotos = false;
     this.getPhotos(refresher);
   }
 
@@ -113,29 +124,29 @@ export class PhotoWallPage {
 
   likePhoto(photo) {
     if (firebase.auth().currentUser) {
-      if (this.checkUserLiked(photo)) {
+      if (photo.userLiked) {
         console.log('Already liked');
+        photo.userLiked = false;
+        // Update Like count
+        firebase.database().ref('photos/'+photo.key).update({
+          likes: photo.likes-1
+        });
+        // Remove user from user liked
+        firebase.database().ref('photos/'+photo.key+'/usersLiked/'+this.user.uid).remove();
+        // Update the UI variable
+        photo.likes = photo.likes-1;
       } else {
-        var data = {
-          img: photo.img,
-          authorUID: photo.authorUID,
-          author: photo.author,
-          likes: photo.likes+1,
-          comments: photo.comments,
-          uploadDate: photo.uploadDate,
-          commentCount: photo.commentCount
-        }
-        var updates = {};
-        updates[photo.key] = data;
-        this.photoref.update(updates);
-
-        var dataUser = {
+        photo.userLiked = true;
+        // Update like count
+        firebase.database().ref('photos/'+photo.key).update({
+          likes: photo.likes+1
+        });
+        // Add user to user liked
+        firebase.database().ref('photos/'+photo.key+'/usersLiked/'+this.user.uid).update({
           userId: this.user.uid,
           displayName: this.user.displayName
-        };
-        var usersLiked = {};
-        usersLiked[this.user.uid] = dataUser;
-        firebase.database().ref('photos/'+photo.key+'/usersLiked/').update(usersLiked);
+        });
+        // Update the UI variable
         photo.likes = photo.likes+1;
       }
     } else {
@@ -148,9 +159,26 @@ export class PhotoWallPage {
     }
   }
 
+  getUserLiked() {
+    for (let photo of this.photos) {
+      firebase.database().ref('photos/'+photo.key+'/usersLiked').once('value', resp => {
+        var usersLiked = [];
+        usersLiked = snapshotToArray(resp);
+        for (let user of usersLiked) {
+          if (user.key === this.user.uid) {
+            photo.userLiked = true;
+            break;
+          } else {
+            photo.userLiked = false;
+          }
+        }
+      });
+    }
+  }
+
   checkUserLiked(photo): boolean {
     var usersLiked = [];
-    firebase.database().ref('photos/'+photo.key+'/usersLiked').on('value', resp => {
+    firebase.database().ref('photos/'+photo.key+'/usersLiked').once('value', resp => {
       usersLiked = snapshotToArray(resp);
     });
     if (usersLiked) {

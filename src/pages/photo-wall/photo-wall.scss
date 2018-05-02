@@ -1,8 +1,16 @@
 page-photo-wall {
 
+    a[disabled], button[disabled], [ion-button][disabled] {
+        opacity: 1;
+    }
+
     .about-row {
         margin-top: 0;
         margin-bottom: 0;
+        // padding-top: 25px;
+        -webkit-box-shadow: 0px -4px 3px rgba(50, 50, 50, 0.15);
+        -moz-box-shadow: 0px -4px 3px rgba(50, 50, 50, 0.15);
+        box-shadow: 0px -4px 3px rgba(50, 50, 50, 0.15);
     }
 
     .share-row {
@@ -22,7 +30,16 @@ page-photo-wall {
     }
 
     .img {
-        object-fit: cover;
+        background-color: rgba(0, 0, 0, 0.05);
+        object-fit: contain;
         height: 350px;
+    }
+
+    .liked {
+        color: #32db64;
+    }
+
+    .unliked {
+        color: #488aff;
     }
 }

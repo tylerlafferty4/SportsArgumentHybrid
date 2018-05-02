@@ -37,19 +37,21 @@ export class PhotoCommentPage {
 
   sendComment() {
     // Update comment count
-    var data = {
-      author: this.selectedPhoto.author,
-      authorUID: this.selectedPhoto.authorUID,
-      img: this.selectedPhoto.img,
-      likes: this.selectedPhoto.likes,
-      comments: this.selectedPhoto.comments,
-      usersLiked: this.selectedPhoto.usersLiked,
-      commentCount: this.selectedPhoto.commentCount+1,
-      uploadDate: this.selectedPhoto.uploadDate
-    }
-    var updates = {};
-    updates[this.selectedPhoto.key] = data;
-    firebase.database().ref('photos/').update(updates);
+    // var data = {
+    //   author: this.selectedPhoto.author,
+    //   authorUID: this.selectedPhoto.authorUID,
+    //   img: this.selectedPhoto.img,
+    //   likes: this.selectedPhoto.likes,
+    //   comments: this.selectedPhoto.comments,
+    //   usersLiked: this.selectedPhoto.usersLiked,
+    //   commentCount: this.selectedPhoto.commentCount+1,
+    //   uploadDate: this.selectedPhoto.uploadDate
+    // }
+    // var updates = {};
+    // updates[this.selectedPhoto.key] = data;
+    firebase.database().ref('photos/'+this.selectedPhoto.key).update({
+      commentCount: this.selectedPhoto.commentCount+1
+    });
 
     // Add the comment to firebase
     let sendDate = moment(Date()).format('M/D/YYYY, h:mm:ss a z');

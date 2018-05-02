@@ -1,6 +1,6 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>Photo Wall</ion-title>
+    <ion-title>Wall of Fame</ion-title>
     <ion-buttons end>
       <button ion-button text-only (click)="capture()">
         Upload
@@ -34,8 +34,9 @@
       <ion-row class="share-row" no-padding>
           <ion-col>
             <button ion-button icon-start clear small (click)="likePhoto(photo)">
-              <ion-icon name="thumbs-up"></ion-icon>
-              {{photo.likes}}
+              <ion-icon *ngIf="!photo.userLiked" name="thumbs-up" color="primary"></ion-icon>
+              <ion-icon *ngIf="photo.userLiked" name="thumbs-up" color="secondary"></ion-icon>
+              <div [ngClass]="(photo.userLiked)?'liked':'unliked'" class="liked">{{photo.likes}}</div>
             </button>
           </ion-col>
           <ion-col text-center>

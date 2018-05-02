@@ -210,14 +210,11 @@ export class ChatPage {
 
   updateMessageCount() {
     let sendDate = moment(Date()).format('M/D/YYYY, h:mm:ss a z');
-    let newData = firebase.database().ref('chatrooms/'+this.roomkey).push().key;
-    var dataCount = {
+
+    firebase.database().ref('chatrooms/'+this.roomkey+'/infoUpdate').update({
       messageCount: this.chats.length,
       dateSent: sendDate
-    };
-    var updates = {};
-    updates['infoUpdate'] = dataCount;
-    firebase.database().ref('chatrooms/'+this.roomkey).update(updates);
+    });
   }
 
   sendMessageNotification() {
